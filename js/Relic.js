@@ -6,6 +6,7 @@ class Relic extends EventHandler{
      * @param {HTMLImageElement} image 
      */
     constructor(name, description, image) {
+        super();
         /** @type {String} */
         this.name = name;
         /** @type {String} */
@@ -23,4 +24,16 @@ class Relic extends EventHandler{
     }
 
     
+}
+
+class Spike extends Relic {
+    constructor() {
+        super('Spike', 'Deal 1 damage to the enemy at the start of your turn.', new Image('img/relic/spike.png'));
+    }
+
+    emit(event) {
+        if (event.type === 'turnStart') {
+            event.target.damage(1);
+        }
+    }
 }
