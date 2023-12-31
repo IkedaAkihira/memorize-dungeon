@@ -37,3 +37,15 @@ class Spike extends Relic {
         }
     }
 }
+
+class Suicidy extends Relic {
+    constructor() {
+        super('Suicidy', 'DEATH', new Image('img/relic/suicidy.png'));
+    }
+
+    emit(event) {
+        if (event.type === 'attack') {
+            event.floor.actionOutcomeStack.push(new SuicidyElement(event.damage * 2, event.damageTarget));
+        }
+    }
+}
