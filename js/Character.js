@@ -17,6 +17,10 @@ class Character extends EventHandler {
         this.image = image;
         /** @type {Object} */
         this.effects = {};
+        /** @type {number} */
+        this.x = 0;
+        /** @type {number} */
+        this.y = 0;
     }
 
     addEffect(effect) {
