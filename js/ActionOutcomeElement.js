@@ -110,7 +110,48 @@ class SuperPoisonElement extends ActionOutcomeElement {
     }
 }
 
-class SuicidyElement extends ActionOutcomeElement {
+class HeavySlashElement extends ActionOutcomeElement {
+    constructor(damage, target) {
+        super();
+        /** @type {number} */
+        this.damage = damage;
+        /** @type {Character} */
+        this.target = target;
+        /** @type {boolean} */
+        this.hasDealtDamage = false;
+        /** @type {number} */
+        this.startTime = 0;
+        /** @type {number} */
+        this.frames = 8;
+        /** @type {number} */
+        this.animationTime = 500;
+        /** @type {Image[]} */
+        this.images = separateImages(document.getElementById('animation-heavy-slash'), this.frames, 1, 120, 120, 120, 120);
+    }
+    
+    start() {
+        super.start();
+        this.startTime = Date.now();
+    }
+
+
+    update(delta, floor) {
+        if (!this.hasDealtDamage) {
+            this.hasDealtDamage = true;
+            this.target.damage(this.damage, null, floor);
+        }
+
+        if (this.startTime + this.animationTime < Date.now()) {
+            this.isRunning = false;
+            return;
+        }
+
+        // render
+        floor.ctx.drawImage(this.images[Math.floor((Date.now() - this.startTime) / (this.animationTime / this.frames))], this.target.x - 60, this.target.y - 60, 120, 120);
+    }
+}
+
+class SlashElement extends ActionOutcomeElement {
     constructor(damage, target) {
         super();
         /** @type {number} */
@@ -148,5 +189,33 @@ class SuicidyElement extends ActionOutcomeElement {
 
         // render
         floor.ctx.drawImage(this.images[Math.floor((Date.now() - this.startTime) / (this.animationTime / this.frames))], this.target.x - 60, this.target.y - 60, 120, 120);
+    }
+}
+
+class PlayerInteractionElement {
+    constructor() {
+        /** @type {boolean} */
+        this.isRunning = false;
+    }
+
+    start() {
+        this.isRunning = true;
+        isBusy = false;
+    }
+
+    update(delta, floor) {
+        if (actionCode === '') {
+            return;
+        }
+
+        if (actionCode === 'strike') {
+            floor.actionOutcomeStack.push(new SlashElement(10, floor.enemy));
+        } else if (actionCode === 'heavy-strike') {
+            floor.actionOutcomeStack.push(new HeavySlashElement(25, floor.enemy));
+        }
+
+        actionCode = '';
+        this.isRunning = false;
+        isBusy = true;
     }
 }

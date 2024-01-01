@@ -57,6 +57,14 @@ class Character extends EventHandler {
             effect.emit(event);
         }
     }
+
+    /**
+     * 
+     * @param {BattleFloor} floor
+     */
+    action(floor) {
+        floor.player.addEffect(new SuperPoisonEffect(3, floor.player));
+    }
 }
 
 class Player extends Character {
@@ -84,6 +92,14 @@ class Player extends Character {
         for (const relic of this.relics) {
             relic.emit(event);
         }
+    }
+
+    /**
+     * 
+     * @param {BattleFloor} floor
+     */
+    action(floor) {
+        floor.actionOutcomeStack.push(new PlayerInteractionElement());
     }
     
 }
