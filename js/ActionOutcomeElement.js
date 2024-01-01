@@ -192,6 +192,57 @@ class SlashElement extends ActionOutcomeElement {
     }
 }
 
+class EnemyAttackElement {
+    constructor(enemy) {
+        /** @type {boolean} */
+        this.isRunning = false;
+        /**@type {number} */
+        this.startTime = 0;
+        /** @type {number} */
+        this.animationTime = 1000;
+        /** @type {Character} */
+        this.enemy = enemy;
+        /** @type {number} */
+        this.startX = this.enemy.x;
+        /** @type {boolean} */
+        this.hasAttacked = false;
+    }
+
+    start() {
+        this.isRunning = true;
+        this.startTime = Date.now();
+    }
+
+    /**
+     * 
+     * @param {number} delta
+     * @param {DungeonFloor} floor
+     */
+    update(delta, floor) {
+        if (this.startTime + this.animationTime / 2 < Date.now() && !this.hasAttacked) {
+            this.attemptAttack(floor);
+            this.hasAttacked = true;
+        }
+        if (this.startTime + this.animationTime < Date.now()) {
+            this.isRunning = false;
+            this.enemy.x = this.startX;
+            return;
+        }
+
+        this.enemy.x = this.startX - 120 * this.f((Date.now() - this.startTime) / this.animationTime);
+        console.log(this.enemy.x);
+    }
+
+    f(x) {
+        return Math.max(0, Math.sin(x * Math.PI));
+    }
+
+
+    attemptAttack(floor) {
+        floor.player.addEffect(new SuperPoisonEffect(2, floor.player));
+    }
+}
+
 class PlayerInteractionElement {
     constructor() {
         /** @type {boolean} */

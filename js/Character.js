@@ -63,7 +63,7 @@ class Character extends EventHandler {
      * @param {BattleFloor} floor
      */
     action(floor) {
-        floor.player.addEffect(new SuperPoisonEffect(3, floor.player));
+        floor.actionOutcomeStack.push(new EnemyAttackElement(this));
     }
 }
 
