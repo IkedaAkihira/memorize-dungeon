@@ -32,7 +32,7 @@ class PoisonDamageElement extends ActionOutcomeElement {
         /** @type {number} */
         this.frames = 8;
         /** @type {number} */
-        this.animationTime = 1000;
+        this.animationTime = 500;
         /** @type {Image[]} */
         this.images = separateImages(document.getElementById('animation-poison'), this.frames, 1, 120, 120, 120, 120);
     }
@@ -43,12 +43,16 @@ class PoisonDamageElement extends ActionOutcomeElement {
     }
 
     update(delta, floor) {
-        if (!this.hasDealtDamage) {
+        if (!this.hasDealtDamage && this.startTime + this.animationTime / 2 < Date.now()) {
             this.hasDealtDamage = true;
             this.target.damage(this.damage, null, floor);
         }
 
         if (this.startTime + this.animationTime < Date.now()) {
+            this.target.effects['poison'].amount--;
+            if(this.target.effects['poison'].amount <= 0) {
+                this.target.removeEffect('poison');
+            }
             this.isRunning = false;
             return;
         }
@@ -74,7 +78,7 @@ class SuperPoisonElement extends ActionOutcomeElement {
         /** @type {number} */
         this.frames = 8;
         /** @type {number} */
-        this.animationTime = 1000;
+        this.animationTime = 500;
         /** @type {Image[]} */
         this.images = separateImages(document.getElementById('animation-super-poison'), this.frames, 1, 120, 120, 120, 120);
     }
@@ -85,12 +89,16 @@ class SuperPoisonElement extends ActionOutcomeElement {
     }
 
     update(delta, floor) {
-        if (!this.hasDealtDamage) {
+        if (!this.hasDealtDamage && this.startTime + this.animationTime / 2 < Date.now()) {
             this.hasDealtDamage = true;
             this.target.addEffect(new PoisonEffect(this.amount, this.target));
         }
 
         if (this.startTime + this.animationTime < Date.now()) {
+            this.target.effects['superPoison'].amount--;
+            if(this.target.effects['superPoison'].amount <= 0) {
+                this.target.removeEffect('superPoison');
+            }
             this.isRunning = false;
             return;
         }
@@ -116,7 +124,7 @@ class SuicidyElement extends ActionOutcomeElement {
         /** @type {number} */
         this.frames = 5;
         /** @type {number} */
-        this.animationTime = 1000;
+        this.animationTime = 300;
         /** @type {Image[]} */
         this.images = separateImages(document.getElementById('animation-slash'), this.frames, 1, 120, 120, 120, 120);
     }
@@ -133,7 +141,7 @@ class SuicidyElement extends ActionOutcomeElement {
             this.target.damage(this.damage, null, floor);
         }
 
-        if (this.startTime + 1000 < Date.now()) {
+        if (this.startTime + this.animationTime < Date.now()) {
             this.isRunning = false;
             return;
         }
