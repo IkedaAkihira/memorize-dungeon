@@ -33,7 +33,7 @@ class PoisonEffect extends Effect {
      * @param {Character} target
      */
     constructor(amount, target) {
-        super('poison', 'Poison', 'Deal 1 damage at the end of your turn.', new Image('img/effect/poison.png'), amount, target);
+        super('poison', 'Poison', 'Deal 1 damage at the end of your turn.', document.getElementById('effect-poison'), amount, target);
     }
 
     /**
@@ -42,10 +42,7 @@ class PoisonEffect extends Effect {
      */
     emit(event) {
         if (event.type === 'turnEnd' && event.target === this.target) {
-            event.floor.actionOutcomeStack.push(new PoisonDamageElement(this.amount--, event.target));
-            if(this.amount <= 0) {
-                event.target.removeEffect(this.id);
-            }
+            event.floor.actionOutcomeStack.push(new PoisonDamageElement(this.amount, event.target));
         }
     }
 }
@@ -57,7 +54,7 @@ class SuperPoisonEffect extends Effect {
      * @param {Character} target
      */
     constructor(amount, target) {
-        super('superPoison', 'Super Poison', 'Deal 1 damage at the end of your turn.', new Image('img/effect/super_poison.png'), amount, target);
+        super('superPoison', 'Super Poison', 'Deal 1 damage at the end of your turn.', document.getElementById('effect-super-poison'), amount, target);
     }
 
     /**
@@ -66,10 +63,7 @@ class SuperPoisonEffect extends Effect {
      */
     emit(event) {
         if (event.type === 'beforeTurnEnd' && event.target === this.target) {
-            event.floor.actionOutcomeStack.push(new SuperPoisonElement(this.amount--, event.target));
-            if(this.amount <= 0) {
-                event.target.removeEffect(this.id);
-            }
+            event.floor.actionOutcomeStack.push(new SuperPoisonElement(this.amount, event.target));
         }
     }
 }
