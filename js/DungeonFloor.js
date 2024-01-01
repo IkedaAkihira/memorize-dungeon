@@ -39,8 +39,19 @@ class BattleFloor extends DungeonFloor{
         this.eventHandler = new BattleFloorEventHandlers(player, enemy);
         /** @type {number} */
         this.turnCount = 0;
-        /** @type {boolean} */
-        this.hasTurnEnded = true;
+        /** 
+         * 0 = Before player's turn start
+         * 1 = Player's turn start
+         * 2 = Player's turn
+         * 3 = Before player's turn end
+         * 4 = Player's turn end
+         * 5 = Before enemy's turn start
+         * 6 = Enemy's turn start
+         * 7 = Enemy's turn
+         * 8 = Before enemy's turn end
+         * 9 = Enemy's turn end
+         * @type {number} */
+        this.turnState = 0;
     }
 
     update(delta) {
@@ -85,12 +96,7 @@ class BattleFloor extends DungeonFloor{
         
         
         // Update action outcome elements
-        if (this.currentOutcomeElement != null) {
-            this.currentOutcomeElement.update(delta, this);
-            if (!this.currentOutcomeElement.isRunning) {
-                this.currentOutcomeElement = null;
-            }
-        } else {
+        if (this.currentOutcomeElement == null) {
             if (this.player.health <= 0 || this.enemy.health <= 0) {
                 // Game over
                 this.ctx.font = '30px Arial';
@@ -101,26 +107,39 @@ class BattleFloor extends DungeonFloor{
                 this.currentOutcomeElement = this.actionOutcomeStack.pop();
                 this.currentOutcomeElement.start();
             } else {
-                if (this.turnCount % 2 === 0) {
-                    if (this.hasTurnEnded) {
-                        this.hasTurnEnded = false;
-                        this.eventHandler.emit(new BeforeTurnEndEvent(this.player, this.enemy, this));
-                    } else {
-                        this.hasTurnEnded = true;
-                        this.eventHandler.emit(new TurnEndEvent(this.player, this.enemy, this));
-                        this.turnCount++;
-                    }
-                } else {
-                    if (this.hasTurnEnded) {
-                        this.hasTurnEnded = false;
-                        this.eventHandler.emit(new BeforeTurnEndEvent(this.enemy, this.player, this));
-                    } else {
-                        this.hasTurnEnded = true;
-                        this.eventHandler.emit(new TurnEndEvent(this.enemy, this.player, this));
-                        this.turnCount++;
-                    }
+                if (this.turnState === 0) {
+                    this.turnCount++;
+                    this.eventHandler.emit(new BeforeTurnStartEvent(this.player, this.enemy, this));
+                } else if (this.turnState === 1) {
+                    this.eventHandler.emit(new TurnStartEvent(this.player, this.enemy, this));
+                } else if (this.turnState === 2) {
+                    // Player's turn
+                    this.player.action(this);
+                } else if (this.turnState === 3) {
+                    this.eventHandler.emit(new BeforeTurnEndEvent(this.player, this.enemy, this));
+                } else if (this.turnState === 4) {
+                    this.eventHandler.emit(new TurnEndEvent(this.player, this.enemy, this));
+                } else if (this.turnState === 5) {
+                    this.eventHandler.emit(new BeforeTurnStartEvent(this.enemy, this.player, this));
+                } else if (this.turnState === 6) {
+                    this.eventHandler.emit(new TurnStartEvent(this.enemy, this.player, this));
+                } else if (this.turnState === 7) {
+                    // Enemy's turn
+                    this.enemy.action(this);
+                } else if (this.turnState === 8) {
+                    this.eventHandler.emit(new BeforeTurnEndEvent(this.enemy, this.player, this));
+                } else if (this.turnState === 9) {
+                    this.eventHandler.emit(new TurnEndEvent(this.enemy, this.player, this));
                 }
+
+                this.turnState = (this.turnState + 1) % 10;
+
+                
             }
+        }
+        this.currentOutcomeElement.update(delta, this);
+        if (!this.currentOutcomeElement.isRunning) {
+            this.currentOutcomeElement = null;
         }
     }
 }

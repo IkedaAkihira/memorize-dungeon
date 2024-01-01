@@ -45,7 +45,7 @@ class Suicidy extends Relic {
 
     emit(event) {
         if (event.type === 'attack') {
-            event.floor.actionOutcomeStack.push(new SuicidyElement(event.damage * 2, event.damageTarget));
+            event.floor.actionOutcomeStack.push(new SlashElement(event.damage * 2, event.damageTarget));
         }
     }
 }

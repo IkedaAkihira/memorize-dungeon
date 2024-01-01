@@ -13,12 +13,12 @@ const floor = new BattleFloor(dungeonCanvas.getContext('2d'), player, enemy);
 
 player.x = 120;
 player.y = dungeonCanvas.height / 2;
-player.addEffect(new SuperPoisonEffect(5, player));
-player.addRelic(new Suicidy());
+// player.addEffect(new SuperPoisonEffect(5, player));
+// player.addRelic(new Suicidy());
 
 enemy.x = dungeonCanvas.width - 120;
 enemy.y = dungeonCanvas.height / 2;
-enemy.addEffect(new PoisonEffect(5, enemy));
+// enemy.addEffect(new PoisonEffect(5, enemy));
 
 let lastTime = 0;
 
