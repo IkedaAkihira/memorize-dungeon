@@ -35,11 +35,15 @@ class PoisonDamageElement extends ActionOutcomeElement {
         this.animationTime = 500;
         /** @type {Image[]} */
         this.images = separateImages(document.getElementById('animation-poison'), this.frames, 1, 120, 120, 120, 120);
+        /** @type {HTMLAudioElement} */
+        this.audio = document.getElementById('audio-poison');
     }
 
     start() {
         super.start();
         this.startTime = Date.now();
+        this.audio.currentTime = 0;
+        this.audio.play();
     }
 
     update(delta, floor) {
@@ -81,11 +85,15 @@ class SuperPoisonElement extends ActionOutcomeElement {
         this.animationTime = 500;
         /** @type {Image[]} */
         this.images = separateImages(document.getElementById('animation-super-poison'), this.frames, 1, 120, 120, 120, 120);
+        /** @type {HTMLAudioElement} */
+        this.audio = document.getElementById('audio-super-poison');
     }
 
     start() {
         super.start();
         this.startTime = Date.now();
+        this.audio.currentTime = 0;
+        this.audio.play();
     }
 
     update(delta, floor) {
@@ -127,11 +135,15 @@ class HeavySlashElement extends ActionOutcomeElement {
         this.animationTime = 500;
         /** @type {Image[]} */
         this.images = separateImages(document.getElementById('animation-heavy-slash'), this.frames, 1, 120, 120, 120, 120);
+        /** @type {HTMLAudioElement} */
+        this.audio = document.getElementById('audio-heavy-slash');
     }
     
     start() {
         super.start();
         this.startTime = Date.now();
+        this.audio.currentTime = 0;
+        this.audio.play();
     }
 
 
@@ -168,11 +180,15 @@ class SlashElement extends ActionOutcomeElement {
         this.animationTime = 300;
         /** @type {Image[]} */
         this.images = separateImages(document.getElementById('animation-slash'), this.frames, 1, 120, 120, 120, 120);
+        /** @type {HTMLAudioElement} */
+        this.audio = document.getElementById('audio-slash');
     }
     
     start() {
         super.start();
         this.startTime = Date.now();
+        this.audio.currentTime = 0;
+        this.audio.play();
     }
 
 
