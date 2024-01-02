@@ -79,3 +79,9 @@ function showQuizDialog() {
 function showAnswerDialog() {
     answerDialog.showModal();
 }
+
+addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        event.preventDefault();
+    }
+});
