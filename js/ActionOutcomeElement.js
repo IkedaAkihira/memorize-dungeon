@@ -62,8 +62,6 @@ class PoisonDamageElement extends ActionOutcomeElement {
         }
 
         // render
-        console.log(this.images);
-        console.log(Math.floor((Date.now() - this.startTime) / (this.animationTime / this.frames)));
         floor.ctx.drawImage(this.images[Math.floor((Date.now() - this.startTime) / (this.animationTime / this.frames))], this.target.x - 60, this.target.y - 60, 120, 120);
     }
 }
@@ -112,8 +110,6 @@ class SuperPoisonElement extends ActionOutcomeElement {
         }
 
         // render
-        console.log(this.images);
-        console.log(Math.floor((Date.now() - this.startTime) / (this.animationTime / this.frames)));
         floor.ctx.drawImage(this.images[Math.floor((Date.now() - this.startTime) / (this.animationTime / this.frames))], this.target.x - 60, this.target.y - 60, 120, 120);
     }
 }
@@ -250,7 +246,6 @@ class EnemyAttackElement {
         }
 
         this.enemy.x = this.startX - 120 * this.f((Date.now() - this.startTime) / this.animationTime);
-        console.log(this.enemy.x);
     }
 
     f(x) {
@@ -294,6 +289,9 @@ class PlayerInteractionElement {
                 }, () => {}));
             }, () => {}));
             // floor.actionOutcomeStack.push(new HeavySlashElement(25, floor.enemy));
+        } else {
+            console.log('Unknown action code: ' + actionCode);
+            return;
         }
 
         actionCode = '';
