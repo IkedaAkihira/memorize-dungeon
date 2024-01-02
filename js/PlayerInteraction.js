@@ -1,5 +1,5 @@
 let actionCode = '';
-let isBusy = true;
+let isActionBusy = true;
 
 const strikeButton = document.getElementById('strike');
 const heabyStrikeButton = document.getElementById('heavy-strike');
@@ -10,14 +10,14 @@ const correctAnswerButton = document.getElementById('correct-answer');
 const wrongAnswerButton = document.getElementById('wrong-answer');
 
 strikeButton.addEventListener('click', () => {
-    if (isBusy) {
+    if (isActionBusy) {
         return;
     }
     actionCode = 'strike';
 });
 
 heabyStrikeButton.addEventListener('click', () => {
-    if (isBusy) {
+    if (isActionBusy) {
         return;
     }
     actionCode = 'heavy-strike';
@@ -50,3 +50,32 @@ wrongAnswerButton.addEventListener('click', () => {
     actionCode = 'wrong-answer';
     answerDialog.close();
 });
+
+const quizzes = [
+    ['\\[1 + 1\\]', '\\[2\\]'],
+    ["Accommodate", "収容する"],
+    ["Commence", "始める"],
+    ["Diligent", "勤勉な"],
+    ["Facilitate", "促進する"],
+    ["Inquire", "尋ねる"],
+    ["Negligible", "取るに足らない"],
+    ["Obtain", "手に入れる"],
+    ["Relinquish", "放棄する"],
+    ["Unprecedented", "前例のない"],
+    ["Withhold", "保留する"]
+]
+
+function showQuizDialog() {
+    const quiz = quizzes[Math.floor(Math.random() * quizzes.length)];
+    const quizText = document.getElementById('quiz-dialog-question');
+    const answerText = document.getElementById('answer-dialog-answer');
+    quizText.innerHTML = quiz[0];
+    answerText.innerHTML = quiz[1];
+    MathJax.Hub.Typeset(quizDialog);
+    MathJax.Hub.Typeset(answerDialog);
+    quizDialog.showModal();
+}
+
+function showAnswerDialog() {
+    answerDialog.showModal();
+}

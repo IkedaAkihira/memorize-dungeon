@@ -222,6 +222,8 @@ class EnemyAttackElement {
         this.startX = this.enemy.x;
         /** @type {boolean} */
         this.hasAttacked = false;
+        /** @type {HTMLAudioElement} */
+        this.audio = document.getElementById('audio-heavy-slash');
     }
 
     start() {
@@ -237,6 +239,8 @@ class EnemyAttackElement {
     update(delta, floor) {
         if (this.startTime + this.animationTime / 2 < Date.now() && !this.hasAttacked) {
             this.attemptAttack(floor);
+            this.audio.currentTime = 0;
+            this.audio.play();
             this.hasAttacked = true;
         }
         if (this.startTime + this.animationTime < Date.now()) {
@@ -267,7 +271,7 @@ class PlayerInteractionElement {
 
     start() {
         this.isRunning = true;
-        isBusy = false;
+        isActionBusy = false;
     }
 
     update(delta, floor) {
@@ -294,7 +298,7 @@ class PlayerInteractionElement {
 
         actionCode = '';
         this.isRunning = false;
-        isBusy = true;
+        isActionBusy = true;
     }
 }
 
@@ -314,7 +318,7 @@ class QuizElement extends ActionOutcomeElement{
 
     start() {
         super.start();
-        quizDialog.showModal();
+        showQuizDialog();
     }
     
     update(delta, floor) {
@@ -323,7 +327,7 @@ class QuizElement extends ActionOutcomeElement{
                 quizDialog.close();
                 actionCode = '';
                 this.quizState = 1;
-                answerDialog.showModal();
+                showAnswerDialog();
             }
             return;
         }

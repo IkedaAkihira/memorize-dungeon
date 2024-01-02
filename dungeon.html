@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dungeon</title>
     <link rel="stylesheet" href="css/dungeon.css">
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 </head>
 <body>
     <div class="separator">
@@ -47,12 +48,16 @@
     </div>
 
     <dialog id="quiz-dialog">
-        <div id="quiz-dialog-question"></div>
+        <div id="quiz-dialog-question">
+            \[1+1=?\]
+        </div>
         <button id="quiz-dialog-show-answer">答えを見る</button>
     </dialog>
 
     <dialog id="answer-dialog">
-        <div id="answer-dialog-answer"></div>
+        <div id="answer-dialog-answer">
+            \[2\]
+        </div>
         <button id="correct-answer">正解</button>
         <button id="wrong-answer">不正解</button>
     </dialog>
