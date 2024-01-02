@@ -29,6 +29,4 @@ function update() {
     floor.update(delta);
 }
 
-setTimeout(() => {
-    setInterval(update, 1000 / 30, 0);
-}, 1000);
+setInterval(update, 1000 / 30, 0);
