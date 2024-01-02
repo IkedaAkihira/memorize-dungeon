@@ -10,7 +10,6 @@ const enemy = new Character('Enemy', 100, enemyImage);
 
 const floor = new BattleFloor(dungeonCanvas.getContext('2d'), player, enemy);
 
-
 player.x = 120;
 player.y = dungeonCanvas.height / 2;
 // player.addEffect(new SuperPoisonEffect(5, player));
