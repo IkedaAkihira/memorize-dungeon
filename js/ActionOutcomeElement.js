@@ -276,13 +276,71 @@ class PlayerInteractionElement {
         }
 
         if (actionCode === 'strike') {
-            floor.actionOutcomeStack.push(new SlashElement(10, floor.enemy));
+            floor.actionOutcomeStack.push(new QuizElement(() => {
+                floor.actionOutcomeStack.push(new SlashElement(10, floor.enemy));
+            }, () => {
+
+            }));
         } else if (actionCode === 'heavy-strike') {
-            floor.actionOutcomeStack.push(new HeavySlashElement(25, floor.enemy));
+            floor.actionOutcomeStack.push(new QuizElement(() => {
+                floor.actionOutcomeStack.push(new QuizElement(() => {
+                    floor.actionOutcomeStack.push(new QuizElement(() => {
+                        floor.actionOutcomeStack.push(new HeavySlashElement(25, floor.enemy));
+                    }, () => {}));
+                }, () => {}));
+            }, () => {}));
+            // floor.actionOutcomeStack.push(new HeavySlashElement(25, floor.enemy));
         }
 
         actionCode = '';
         this.isRunning = false;
         isBusy = true;
+    }
+}
+
+class QuizElement extends ActionOutcomeElement{
+    constructor(onCorrect, onWrong) {
+        super();
+        /** @type {function} */
+        this.onCorrect = onCorrect;
+        /** @type {function} */
+        this.onWrong = onWrong;
+        /**
+         * 0 = quiz
+         * 1 = answer
+         *  @type {number} */
+        this.quizState = 0;
+    }
+
+    start() {
+        super.start();
+        quizDialog.showModal();
+    }
+    
+    update(delta, floor) {
+        if (this.quizState === 0) {
+            if (actionCode === 'show-answer') {
+                quizDialog.close();
+                actionCode = '';
+                this.quizState = 1;
+                answerDialog.showModal();
+            }
+            return;
+        }
+
+        if (this.quizState === 1) {
+            if (actionCode === 'correct-answer') {
+                actionCode = '';
+                this.onCorrect();
+                this.isRunning = false;
+                return;
+            }
+            if (actionCode === 'wrong-answer') {
+                actionCode = '';
+                this.onWrong();
+                this.isRunning = false;
+                return;
+            }
+        }
     }
 }
