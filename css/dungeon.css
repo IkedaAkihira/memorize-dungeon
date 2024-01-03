@@ -55,6 +55,14 @@ body {
 .relic-item {
     width: 7%;
     margin: 5px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+}
+
+
+#relic-description {
+    margin: 0;
+    padding: 0;
 }
 
 @media (max-width: 768px) {

@@ -85,6 +85,20 @@ class Player extends Character {
     addRelic(relic) {
         this.relics.push(relic);
         relic.image.classList.add('relic-item');
+        relic.image.addEventListener('mouseenter', (e) => {
+            const relicDescription = document.getElementById('relic-description');
+            const relicName = document.getElementById('relic-description-name');
+            const relicDescriptionText = document.getElementById('relic-description-text');
+            relicName.innerHTML = relic.name;
+            relicDescriptionText.innerHTML = relic.description;
+            relicDescription.style.left = e.pageX + 'px';
+            relicDescription.style.top = e.pageY + 'px';
+            relicDescription.showPopover();
+        });
+        relic.image.addEventListener('mouseleave', () => {
+            const relicDescription = document.getElementById('relic-description');
+            relicDescription.hidePopover();
+        });
         relicList.appendChild(relic.image);
         relic.onEquip(this);
     }
