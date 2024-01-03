@@ -84,6 +84,8 @@ class Player extends Character {
 
     addRelic(relic) {
         this.relics.push(relic);
+        relic.image.classList.add('relic-item');
+        relicList.appendChild(relic.image);
         relic.onEquip(this);
     }
 

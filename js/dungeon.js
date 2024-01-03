@@ -14,6 +14,7 @@ player.x = 120;
 player.y = dungeonCanvas.height / 2;
 // player.addEffect(new SuperPoisonEffect(5, player));
 // player.addRelic(new Suicidy());
+player.addRelic(new PoisonJar());
 
 enemy.x = dungeonCanvas.width - 120;
 enemy.y = dungeonCanvas.height / 2;

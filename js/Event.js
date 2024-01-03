@@ -115,3 +115,35 @@ class BeforeTurnEndEvent extends GameEvent {
         this.opponent = opponent;
     }
 }
+
+class AnswerCorrectEvent extends GameEvent {
+    /**
+     * 
+     * @param {Character} target 
+     * @param {Character} opponent
+     * @param {DungeonFloor} floor
+     */
+    constructor(target, opponent, floor) {
+        super('answerCorrect', floor);
+        /** @type {Character} */
+        this.target = target;
+        /** @type {Character} */
+        this.opponent = opponent;
+    }
+}
+
+class AnswerWrongEvent extends GameEvent {
+    /**
+     * 
+     * @param {Character} target 
+     * @param {Character} opponent
+     * @param {DungeonFloor} floor
+     */
+    constructor(target, opponent, floor) {
+        super('answerWrong', floor);
+        /** @type {Character} */
+        this.target = target;
+        /** @type {Character} */
+        this.opponent = opponent;
+    }
+}

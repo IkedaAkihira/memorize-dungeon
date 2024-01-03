@@ -9,6 +9,8 @@ const showAnswerButton = document.getElementById('quiz-dialog-show-answer');
 const correctAnswerButton = document.getElementById('correct-answer');
 const wrongAnswerButton = document.getElementById('wrong-answer');
 
+const relicList = document.querySelector('.relic-list');
+
 strikeButton.addEventListener('click', () => {
     if (isActionBusy) {
         return;
