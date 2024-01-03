@@ -114,6 +114,50 @@ class SuperPoisonElement extends ActionOutcomeElement {
     }
 }
 
+class AddPoisonElement extends ActionOutcomeElement {
+    constructor(amount, target) {
+        super();
+        /** @type {number} */
+        this.amount = amount;
+        /** @type {Character} */
+        this.target = target;
+        /** @type {boolean} */
+        this.hasAddedPoison = false;
+        /** @type {number} */
+        this.startTime = 0;
+        /** @type {number} */
+        this.frames = 8;
+        /** @type {number} */
+        this.animationTime = 500;
+        /** @type {Image[]} */
+        this.images = separateImages(document.getElementById('animation-poison'), this.frames, 1, 120, 120, 120, 120);
+        /** @type {HTMLAudioElement} */
+        this.audio = document.getElementById('audio-poison');
+    }
+
+    start() {
+        super.start();
+        this.startTime = Date.now();
+        this.audio.currentTime = 0;
+        this.audio.play();
+    }
+
+    update(delta, floor) {
+        if (!this.hasAddedPoison && this.startTime + this.animationTime / 2 < Date.now()) {
+            this.hasAddedPoison = true;
+            this.target.addEffect(new PoisonEffect(this.amount, this.target));
+        }
+
+        if (this.startTime + this.animationTime < Date.now()) {
+            this.isRunning = false;
+            return;
+        }
+
+        // render
+        floor.ctx.drawImage(this.images[Math.floor((Date.now() - this.startTime) / (this.animationTime / this.frames))], this.target.x - 60, this.target.y - 60, 120, 120);
+    }
+}
+
 class HeavySlashElement extends ActionOutcomeElement {
     constructor(damage, target) {
         super();
@@ -254,7 +298,8 @@ class EnemyAttackElement {
 
 
     attemptAttack(floor) {
-        floor.player.addEffect(new SuperPoisonEffect(2, floor.player));
+        floor.player.damage(10, this.enemy, floor);
+        floor.player.addEffect(new PoisonEffect(2, floor.player));
     }
 }
 
@@ -335,12 +380,14 @@ class QuizElement extends ActionOutcomeElement{
                 actionCode = '';
                 this.onCorrect();
                 this.isRunning = false;
+                floor.eventHandler.emit(new AnswerCorrectEvent(floor.player, floor.enemy, floor));
                 return;
             }
             if (actionCode === 'wrong-answer') {
                 actionCode = '';
                 this.onWrong();
                 this.isRunning = false;
+                floor.eventHandler.emit(new AnswerWrongEvent(floor.player, floor.enemy, floor));
                 return;
             }
         }

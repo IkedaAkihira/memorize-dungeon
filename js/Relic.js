@@ -26,6 +26,20 @@ class Relic extends EventHandler{
     
 }
 
+class PoisonJar extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/poison_jar.png';
+        super('Poison Jar', 'Add 1 poison to the enemy when you answer a question correctly.', image);
+    }
+
+    emit(event) {
+        if (event.type === 'answerCorrect') {
+            event.floor.actionOutcomeStack.push(new AddPoisonElement(1, event.opponent));
+        }
+    }
+}
+
 class Spike extends Relic {
     constructor() {
         super('Spike', 'Deal 1 damage to the enemy at the start of your turn.', new Image('img/relic/spike.png'));
