@@ -298,8 +298,12 @@ class EnemyAttackElement {
 
 
     attemptAttack(floor) {
-        floor.player.damage(10, this.enemy, floor);
-        floor.player.addEffect(new PoisonEffect(2, floor.player));
+        let rand = Math.floor(Math.random() * 2);
+        if (rand === 0) {
+            floor.player.damage(5, this.enemy, floor);
+        } else {
+            floor.player.addEffect(new PoisonEffect(3, floor.player));
+        }
     }
 }
 
