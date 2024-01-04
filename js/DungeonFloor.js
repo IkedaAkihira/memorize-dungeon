@@ -52,6 +52,8 @@ class BattleFloor extends DungeonFloor{
          * 9 = Enemy's turn end
          * @type {number} */
         this.turnState = 0;
+        /** @type {number} */
+        this.floorCount = 1;
     }
 
     update(delta) {
@@ -65,6 +67,8 @@ class BattleFloor extends DungeonFloor{
 
 
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        this.ctx.font = '30px Arial';
+        this.ctx.fillText(`Floor ${this.floorCount}`, this.ctx.canvas.width / 2, 30);
         
         // Render the player
         this.ctx.drawImage(this.player.image, this.player.x - this.player.image.width / 2, this.player.y - this.player.image.height / 2, this.player.image.width, this.player.image.height);
@@ -97,10 +101,21 @@ class BattleFloor extends DungeonFloor{
         
         // Update action outcome elements
         if (this.currentOutcomeElement == null) {
-            if (this.player.health <= 0 || this.enemy.health <= 0) {
+            if (this.player.health <= 0) {
                 // Game over
                 this.ctx.font = '30px Arial';
                 this.ctx.fillText('Game over', this.ctx.canvas.width / 2, this.ctx.canvas.height / 2);
+                return;
+            }
+            if (this.enemy.health <= 0) {
+                const enemyImage = new Image(240, 240);
+                enemyImage.src = 'img/characters/dummy.png';
+                this.enemy = new Character('Enemy', 100, enemyImage);
+                this.enemy.x = dungeonCanvas.width - 120;
+                this.enemy.y = dungeonCanvas.height / 2;
+                this.turnCount = 0;
+                this.turnState = 0;
+                this.floorCount++;
                 return;
             }
             if (this.actionOutcomeStack.length > 0) {
