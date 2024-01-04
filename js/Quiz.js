@@ -44,7 +44,7 @@ addEventListener('beforeunload', () => {
 });
 
 function getRandomQuiz() {
-    const unsolvedQuizzes = quizzes.filter(quiz => quiz.lastSolveDate === null || quiz.lastSolveDate < new Date(new Date(new Date().setDate(new Date().getDate() - 3 ** Math.max(quiz.solveCount - 1, 0))).setHours(0, 0, 0, 0)));
+    const unsolvedQuizzes = quizzes.filter(quiz => quiz.lastSolveDate === null || new Date(quiz.lastSolveDate) < new Date(new Date(new Date().setDate(new Date().getDate() - 3 ** Math.max(quiz.solveCount - 1, 0))).setHours(0, 0, 0, 0)));
     if (unsolvedQuizzes.length > 0) {
         console.log(`unsolvedQuizzes: ${unsolvedQuizzes.length}`);
         return unsolvedQuizzes[Math.floor(Math.random() * unsolvedQuizzes.length)];
