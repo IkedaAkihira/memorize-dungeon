@@ -357,11 +357,13 @@ class QuizElement extends ActionOutcomeElement{
          * 1 = answer
          *  @type {number} */
         this.quizState = 0;
+        /** @type {Quiz} */
+        this.quiz = getRandomQuiz();
     }
 
     start() {
         super.start();
-        showQuizDialog();
+        showQuizDialog(this.quiz);
     }
     
     update(delta, floor) {
@@ -378,15 +380,20 @@ class QuizElement extends ActionOutcomeElement{
         if (this.quizState === 1) {
             if (actionCode === 'correct-answer') {
                 actionCode = '';
-                this.onCorrect();
                 this.isRunning = false;
+                if (!this.quiz.isProtected)
+                    this.quiz.solveCount++;
+                this.quiz.lastSolveDate = new Date(new Date().setHours(0, 0, 0, 0));
+                this.onCorrect();
                 floor.eventHandler.emit(new AnswerCorrectEvent(floor.player, floor.enemy, floor));
                 return;
             }
             if (actionCode === 'wrong-answer') {
                 actionCode = '';
-                this.onWrong();
                 this.isRunning = false;
+                this.quiz.solveCount = 0;
+                this.quiz.lastSolveDate = new Date(new Date().setHours(0, 0, 0, 0));
+                this.onWrong();
                 floor.eventHandler.emit(new AnswerWrongEvent(floor.player, floor.enemy, floor));
                 return;
             }
