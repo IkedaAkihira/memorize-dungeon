@@ -391,7 +391,10 @@ class QuizElement extends ActionOutcomeElement{
             if (actionCode === 'wrong-answer') {
                 actionCode = '';
                 this.isRunning = false;
-                this.quiz.solveCount = 0;
+                if (!this.quiz.isProtected)
+                    this.quiz.solveCount = 0;
+                else
+                    this.quiz.solveCount = 1;
                 this.quiz.lastSolveDate = new Date(new Date().setHours(0, 0, 0, 0));
                 this.onWrong();
                 floor.eventHandler.emit(new AnswerWrongEvent(floor.player, floor.enemy, floor));
