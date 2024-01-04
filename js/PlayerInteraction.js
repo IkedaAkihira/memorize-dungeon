@@ -53,26 +53,14 @@ wrongAnswerButton.addEventListener('click', () => {
     answerDialog.close();
 });
 
-const quizzes = [
-    ['\\[1 + 1\\]', '\\[2\\]'],
-    ["Accommodate", "収容する"],
-    ["Commence", "始める"],
-    ["Diligent", "勤勉な"],
-    ["Facilitate", "促進する"],
-    ["Inquire", "尋ねる"],
-    ["Negligible", "取るに足らない"],
-    ["Obtain", "手に入れる"],
-    ["Relinquish", "放棄する"],
-    ["Unprecedented", "前例のない"],
-    ["Withhold", "保留する"]
-]
-
-function showQuizDialog() {
-    const quiz = quizzes[Math.floor(Math.random() * quizzes.length)];
+/**
+ * @param {Quiz} quiz 
+ */
+function showQuizDialog(quiz) {
     const quizText = document.getElementById('quiz-dialog-question');
     const answerText = document.getElementById('answer-dialog-answer');
-    quizText.innerHTML = quiz[0];
-    answerText.innerHTML = quiz[1];
+    quizText.innerText = quiz.question;
+    answerText.innerText = quiz.answer;
     MathJax.Hub.Typeset(quizDialog);
     MathJax.Hub.Typeset(answerDialog);
     quizDialog.showModal();
