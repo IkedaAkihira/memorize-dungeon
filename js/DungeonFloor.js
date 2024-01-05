@@ -113,6 +113,8 @@ class BattleFloor extends DungeonFloor{
                 this.enemy = new Character('Enemy', 100, enemyImage);
                 this.enemy.x = dungeonCanvas.width - 120;
                 this.enemy.y = dungeonCanvas.height / 2;
+
+                this.player.effects = {};
                 this.turnCount = 0;
                 this.turnState = 0;
                 this.floorCount++;
