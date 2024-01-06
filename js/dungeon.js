@@ -9,7 +9,7 @@ const player = new Player('Player', 100, [], 100, playerImage);
 
 let floor;
 
-initFloor();
+initFloor(1);
 
 let lastTime = 0;
 
@@ -18,7 +18,7 @@ function update() {
         return;
     }
     if (!floor.isRunning) {
-        initFloor();
+        initFloor(floor.floorCount + 1);
         openSelectRelicDialog();
         return;
     }
@@ -28,9 +28,9 @@ function update() {
     floor.update(delta);
 }
 
-function initFloor() {
+function initFloor(floorCount) {
     const enemy = new Character('Enemy', 100, enemyImage);
-    floor = new BattleFloor(dungeonCanvas.getContext('2d'), player, enemy);
+    floor = new BattleFloor(dungeonCanvas.getContext('2d'), player, enemy, floorCount);
 
     player.x = 120;
     player.y = dungeonCanvas.height / 2;

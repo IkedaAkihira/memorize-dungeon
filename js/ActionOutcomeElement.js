@@ -343,7 +343,7 @@ class PlayerInteractionElement {
             floor.actionOutcomeStack.push(new QuizElement(() => {
                 floor.actionOutcomeStack.push(new QuizElement(() => {
                     floor.actionOutcomeStack.push(new QuizElement(() => {
-                        floor.actionOutcomeStack.push(new HeavySlashElement(100, floor.enemy, floor.player));
+                        floor.actionOutcomeStack.push(new HeavySlashElement(25, floor.enemy, floor.player));
                     }, () => {}));
                 }, () => {}));
             }, () => {}));
