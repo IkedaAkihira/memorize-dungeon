@@ -1,18 +1,23 @@
 class Relic extends EventHandler{
     /**
      * 
+     * @param {String} id
      * @param {String} name 
      * @param {String} description 
      * @param {HTMLImageElement} image 
      */
-    constructor(name, description, image) {
+    constructor(id, name, description, image) {
         super();
+        /** @type {String} */
+        this.id = id;
         /** @type {String} */
         this.name = name;
         /** @type {String} */
         this.description = description;
         /** @type {HTMLImageElement} */
         this.image = image;
+        /** @type {Player} */
+        this.player = null;
     }
 
     /**
@@ -21,6 +26,7 @@ class Relic extends EventHandler{
      */
     onEquip(player) {
         // Override this method
+        this.player = player;
     }
 
     
@@ -30,7 +36,7 @@ class PoisonJar extends Relic {
     constructor() {
         const image = document.createElement('img');
         image.src = 'img/relics/poison_jar.png';
-        super('Poison Jar', 'Add 1 poison to the enemy when you answer a question correctly.', image);
+        super('poisonJar', '毒瓶', 'クイズに正解するたび、相手に1の毒を付与する。', image);
     }
 
     emit(event) {
@@ -42,24 +48,28 @@ class PoisonJar extends Relic {
 
 class Spike extends Relic {
     constructor() {
-        super('Spike', 'Deal 1 damage to the enemy at the start of your turn.', new Image('img/relic/spike.png'));
+        const image = document.createElement('img');
+        image.src = 'img/relics/spike.png';
+        super('spike', 'スパイク', 'クイズに正解するたびに、相手に3ダメージを与える。', image);
     }
 
     emit(event) {
-        if (event.type === 'turnStart') {
-            event.target.damage(1);
+        if (event.type === 'answerCorrect') {
+            event.floor.actionOutcomeStack.push(new SlashElement(3, event.opponent));
         }
     }
 }
 
-class Suicidy extends Relic {
+class PoisonGas extends Relic {
     constructor() {
-        super('Suicidy', 'DEATH', new Image('img/relic/suicidy.png'));
+        const image = document.createElement('img');
+        image.src = 'img/relics/poison_gas.png';
+        super('poisonGas', '毒ガス', 'ターン開始時、相手に2の毒を付与する。', image);
     }
 
     emit(event) {
-        if (event.type === 'attack') {
-            event.floor.actionOutcomeStack.push(new SlashElement(event.damage * 2, event.damageTarget));
+        if (event.type === 'turnStart' && event.target === this.player) {
+            event.floor.actionOutcomeStack.push(new AddPoisonElement(2, event.opponent));
         }
     }
 }

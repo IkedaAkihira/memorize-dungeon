@@ -5,7 +5,7 @@ body {
 
 #dungeon {
     width: 100%;
-    background-color: gray;
+    background-color: whitesmoke;
 }
 
 .separator {
@@ -36,6 +36,11 @@ body {
     width: 80%;
     background-color: gray;
     text-align: center;
+}
+
+.action-item:hover {
+    cursor: pointer;
+    background-color: #404040;
 }
 
 .separator-item:has(.action-list) {
@@ -76,4 +81,43 @@ body {
     .relic-list {
         width: 100%;
     }
+}
+
+#select-relic-dialog-relic-list {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+.select-relic-dialog-relic-item {
+    width: 100px;
+    height: 100%;
+    margin: 5px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    border: solid 1px black;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+}
+
+.select-relic-dialog-relic-item:hover {
+    cursor: pointer;
+    background-color: #d3d3d3;
+}
+
+.select-relic-dialog-relic-item-name {
+    font-size: 12px;
+}
+
+.select-relic-dialog-relic-item-description {
+    font-size: 8px;
+    height: 40px;
+    text-align: left;
+}
+
+.select-relic-dialog-relic-item-image {
+    width: 70%;
+    margin: auto;
 }
