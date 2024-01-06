@@ -35,11 +35,6 @@
         <img id="animation-heavy-slash" src="img/animations/heavy_slash.png" alt="animation"/>
         <img id="effect-poison" src="img/effects/poison.png" alt="effect"/>
         <img id="effect-super-poison" src="img/effects/super_poison.png" alt="effect"/>
-
-        <audio id="audio-slash" src="audio/slash.mp3"></audio>
-        <audio id="audio-heavy-slash" src="audio/heavy_slash.mp3"></audio>
-        <audio id="audio-poison" src="audio/poison.mp3"></audio>
-        <audio id="audio-super-poison" src="audio/super_poison.mp3"></audio>
     </div>
 
     <dialog id="quiz-dialog">
@@ -57,6 +52,40 @@
         <button id="wrong-answer">不正解</button>
     </dialog>
 
+    <dialog id="select-relic-dialog">
+        <div id="select-relic-dialog-title">
+            レリックを選択してください
+        </div>
+        <div id="select-relic-dialog-relic-list">
+            <div class="select-relic-dialog-relic-item">
+                <img class="select-relic-dialog-relic-item-image" src="img/relics/poison_jar.png" alt="relic"/>
+                <div class="select-relic-dialog-relic-item-name">
+                    レリック名
+                </div>
+                <div class="select-relic-dialog-relic-item-description">
+                    レリックの説明
+                </div>
+            </div><div class="select-relic-dialog-relic-item">
+                <img class="select-relic-dialog-relic-item-image" src="img/relics/poison_jar.png" alt="relic"/>
+                <div class="select-relic-dialog-relic-item-name">
+                    レリック名
+                </div>
+                <div class="select-relic-dialog-relic-item-description">
+                    レリックの説明
+                </div>
+            </div><div class="select-relic-dialog-relic-item">
+                <img class="select-relic-dialog-relic-item-image" src="img/relics/poison_jar.png" alt="relic"/>
+                <div class="select-relic-dialog-relic-item-name">
+                    レリック名
+                </div>
+                <div class="select-relic-dialog-relic-item-description">
+                    レリックの説明
+                </div>
+            </div>
+        </div>
+        
+    </dialog>
+
     <div id="relic-description" popover="manual">
         <h1 id="relic-description-name">
             レリック名
@@ -65,6 +94,8 @@
             レリックの説明
         </p>
     </div>
+
+    <script src="js/AudioResource.js"></script>
 
     <script src="js/Quiz.js"></script>
     <script src="js/PlayerInteraction.js"></script>
@@ -77,8 +108,8 @@
     <script src="js/Effect.js"></script>
     <script src="js/Event.js"></script>
     <script src="js/Relic.js"></script>
+    <script src="js/RelicSelector.js"></script>
 
     <script src="js/dungeon.js"></script>
-
 </body>
 </html>

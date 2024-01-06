@@ -36,12 +36,13 @@ class PoisonDamageElement extends ActionOutcomeElement {
         /** @type {Image[]} */
         this.images = separateImages(document.getElementById('animation-poison'), this.frames, 1, 120, 120, 120, 120);
         /** @type {HTMLAudioElement} */
-        this.audio = document.getElementById('audio-poison');
+        this.audio = AudioResources.poison;
     }
 
     start() {
         super.start();
         this.startTime = Date.now();
+        this.audio.pause();
         this.audio.currentTime = 0;
         this.audio.play();
     }
@@ -84,12 +85,13 @@ class SuperPoisonElement extends ActionOutcomeElement {
         /** @type {Image[]} */
         this.images = separateImages(document.getElementById('animation-super-poison'), this.frames, 1, 120, 120, 120, 120);
         /** @type {HTMLAudioElement} */
-        this.audio = document.getElementById('audio-super-poison');
+        this.audio = AudioResources.superPoison;
     }
 
     start() {
         super.start();
         this.startTime = Date.now();
+        this.audio.pause();
         this.audio.currentTime = 0;
         this.audio.play();
     }
@@ -132,12 +134,13 @@ class AddPoisonElement extends ActionOutcomeElement {
         /** @type {Image[]} */
         this.images = separateImages(document.getElementById('animation-poison'), this.frames, 1, 120, 120, 120, 120);
         /** @type {HTMLAudioElement} */
-        this.audio = document.getElementById('audio-poison');
+        this.audio = AudioResources.poison;
     }
 
     start() {
         super.start();
         this.startTime = Date.now();
+        this.audio.pause();
         this.audio.currentTime = 0;
         this.audio.play();
     }
@@ -176,21 +179,22 @@ class HeavySlashElement extends ActionOutcomeElement {
         /** @type {Image[]} */
         this.images = separateImages(document.getElementById('animation-heavy-slash'), this.frames, 1, 120, 120, 120, 120);
         /** @type {HTMLAudioElement} */
-        this.audio = document.getElementById('audio-heavy-slash');
+        this.audio = AudioResources.heavySlash;
     }
     
     start() {
         super.start();
         this.startTime = Date.now();
+        this.audio.pause();
         this.audio.currentTime = 0;
-        this.audio.play();
     }
 
 
     update(delta, floor) {
-        if (!this.hasDealtDamage) {
+        if (!this.hasDealtDamage && this.startTime + this.animationTime / 2 < Date.now()) {
             this.hasDealtDamage = true;
             this.target.damage(this.damage, null, floor);
+            this.audio.play();
         }
 
         if (this.startTime + this.animationTime < Date.now()) {
@@ -221,21 +225,22 @@ class SlashElement extends ActionOutcomeElement {
         /** @type {Image[]} */
         this.images = separateImages(document.getElementById('animation-slash'), this.frames, 1, 120, 120, 120, 120);
         /** @type {HTMLAudioElement} */
-        this.audio = document.getElementById('audio-slash');
+        this.audio = AudioResources.slash;
     }
     
     start() {
         super.start();
         this.startTime = Date.now();
+        this.audio.pause();
         this.audio.currentTime = 0;
-        this.audio.play();
     }
 
 
     update(delta, floor) {
-        if (!this.hasDealtDamage) {
+        if (!this.hasDealtDamage && this.startTime + this.animationTime / 2 < Date.now()) {
             this.hasDealtDamage = true;
             this.target.damage(this.damage, null, floor);
+            this.audio.play();
         }
 
         if (this.startTime + this.animationTime < Date.now()) {
@@ -263,7 +268,7 @@ class EnemyAttackElement {
         /** @type {boolean} */
         this.hasAttacked = false;
         /** @type {HTMLAudioElement} */
-        this.audio = document.getElementById('audio-heavy-slash');
+        this.audio = AudioResources.heavySlash;
     }
 
     start() {
@@ -279,6 +284,7 @@ class EnemyAttackElement {
     update(delta, floor) {
         if (this.startTime + this.animationTime / 2 < Date.now() && !this.hasAttacked) {
             this.attemptAttack(floor);
+            this.audio.pause();
             this.audio.currentTime = 0;
             this.audio.play();
             this.hasAttacked = true;

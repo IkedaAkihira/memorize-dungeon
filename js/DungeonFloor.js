@@ -14,6 +14,7 @@ class DungeonFloor {
         this.actionOutcomeStack = [];
         /** @type {ActionOutcomeElement} */
         this.currentOutcomeElement = null;
+        this.isRunning = true;
     }
 
     // This method is called when the player enters the floor
@@ -108,16 +109,8 @@ class BattleFloor extends DungeonFloor{
                 return;
             }
             if (this.enemy.health <= 0) {
-                const enemyImage = new Image(240, 240);
-                enemyImage.src = 'img/characters/dummy.png';
-                this.enemy = new Character('Enemy', 100, enemyImage);
-                this.enemy.x = dungeonCanvas.width - 120;
-                this.enemy.y = dungeonCanvas.height / 2;
-
+                this.isRunning = false;
                 this.player.effects = {};
-                this.turnCount = 0;
-                this.turnState = 0;
-                this.floorCount++;
                 return;
             }
             if (this.actionOutcomeStack.length > 0) {
