@@ -26,6 +26,9 @@ class Character extends EventHandler {
     addEffect(effect) {
         if (this.effects.hasOwnProperty(effect.id)) {
             this.effects[effect.id].amount += effect.amount;
+            if (this.effects[effect.id].amount <= 0) {
+                delete this.effects[effect.id];
+            }
         }else {
             this.effects[effect.id] = effect;
         }
@@ -50,6 +53,10 @@ class Character extends EventHandler {
             this.health -= damageEvent.damage;
             floor.eventHandler.emit(new AttackEvent(source, this, damageEvent.damage, floor));
         }
+    }
+
+    heal(amount, floor) {
+        this.health = Math.min(this.health + amount, this.maxHealth);
     }
 
     emit(event) {

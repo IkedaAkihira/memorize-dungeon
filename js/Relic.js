@@ -73,3 +73,59 @@ class PoisonGas extends Relic {
         }
     }
 }
+
+class GrowingSuit extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/growing_suit.png';
+        super('growingSuit', '成長するスーツ', 'クイズに正解するたびに、筋力を1得る。この筋力はターン終了時に失われる。', image);
+    }
+
+    emit(event) {
+        if (event.type === 'answerCorrect') {
+            event.floor.actionOutcomeStack.push(new GainStrengthElement(1, event.target, true));
+        }
+    }
+}
+
+class RegenMachine extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/regen_machine.png';
+        super('regenMachine', '再生装置', 'ターン開始時、体力を2回復する。', image);
+    }
+
+    emit(event) {
+        if (event.type === 'turnStart' && event.target === this.player) {
+            event.floor.actionOutcomeStack.push(new HealElement(2, event.target));
+        }
+    }
+}
+
+class PowerMachine extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/power_machine.png';
+        super('powerMachine', '筋力強化装置', 'ターン開始時、筋力を1得る。', image);
+    }
+
+    emit(event) {
+        if (event.type === 'turnStart' && event.target === this.player) {
+            event.floor.actionOutcomeStack.push(new GainStrengthElement(1, event.target, false));
+        }
+    }
+}
+
+class EnergySource extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/energy_source.png';
+        super('energySource', 'エネルギー源', 'ターン開始時、エネルギーを1得る。', image);
+    }
+
+    emit(event) {
+        if (event.type === 'turnStart' && event.target === this.player) {
+            event.floor.actionOutcomeStack.push(new GainEnergyElement(1, event.target));
+        }
+    }
+}

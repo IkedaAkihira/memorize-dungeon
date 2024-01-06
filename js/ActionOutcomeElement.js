@@ -162,12 +162,14 @@ class AddPoisonElement extends ActionOutcomeElement {
 }
 
 class HeavySlashElement extends ActionOutcomeElement {
-    constructor(damage, target) {
+    constructor(damage, target, source) {
         super();
         /** @type {number} */
         this.damage = damage;
         /** @type {Character} */
         this.target = target;
+        /** @type {Character} */
+        this.source = source;
         /** @type {boolean} */
         this.hasDealtDamage = false;
         /** @type {number} */
@@ -193,7 +195,7 @@ class HeavySlashElement extends ActionOutcomeElement {
     update(delta, floor) {
         if (!this.hasDealtDamage && this.startTime + this.animationTime / 2 < Date.now()) {
             this.hasDealtDamage = true;
-            this.target.damage(this.damage, null, floor);
+            this.target.damage(this.damage, this.source, floor);
             this.audio.play();
         }
 
@@ -208,12 +210,14 @@ class HeavySlashElement extends ActionOutcomeElement {
 }
 
 class SlashElement extends ActionOutcomeElement {
-    constructor(damage, target) {
+    constructor(damage, target, source) {
         super();
         /** @type {number} */
         this.damage = damage;
         /** @type {Character} */
         this.target = target;
+        /** @type {Character} */
+        this.source = source;
         /** @type {boolean} */
         this.hasDealtDamage = false;
         /** @type {number} */
@@ -239,7 +243,7 @@ class SlashElement extends ActionOutcomeElement {
     update(delta, floor) {
         if (!this.hasDealtDamage && this.startTime + this.animationTime / 2 < Date.now()) {
             this.hasDealtDamage = true;
-            this.target.damage(this.damage, null, floor);
+            this.target.damage(this.damage, this.source, floor);
             this.audio.play();
         }
 
@@ -331,7 +335,7 @@ class PlayerInteractionElement {
 
         if (actionCode === 'strike') {
             floor.actionOutcomeStack.push(new QuizElement(() => {
-                floor.actionOutcomeStack.push(new SlashElement(10, floor.enemy));
+                floor.actionOutcomeStack.push(new SlashElement(10, floor.enemy, floor.player));
             }, () => {
 
             }));
@@ -339,7 +343,7 @@ class PlayerInteractionElement {
             floor.actionOutcomeStack.push(new QuizElement(() => {
                 floor.actionOutcomeStack.push(new QuizElement(() => {
                     floor.actionOutcomeStack.push(new QuizElement(() => {
-                        floor.actionOutcomeStack.push(new HeavySlashElement(25, floor.enemy));
+                        floor.actionOutcomeStack.push(new HeavySlashElement(100, floor.enemy, floor.player));
                     }, () => {}));
                 }, () => {}));
             }, () => {}));
@@ -411,5 +415,145 @@ class QuizElement extends ActionOutcomeElement{
                 return;
             }
         }
+    }
+}
+
+class GainStrengthElement extends ActionOutcomeElement {
+    constructor(amount, target, isTemporary) {
+        super();
+        /** @type {number} */
+        this.amount = amount;
+        /** @type {Character} */
+        this.target = target;
+        /** @type {boolean} */
+        this.hasDecreasedStrength = false;
+        /** @type {number} */
+        this.startTime = 0;
+        /** @type {number} */
+        this.frames = 10;
+        /** @type {number} */
+        this.animationTime = 500;
+        /** @type {Image[]} */
+        this.images = separateImages(document.getElementById(amount<0?'animation-power-down':'animation-power-up'), this.frames, 1, 120, 120, 120, 120);
+        /** @type {HTMLAudioElement} */
+        this.audio = amount<0?AudioResources.powerDown:AudioResources.powerUp;
+        /** @type {boolean} */
+        this.isTemporary = isTemporary;
+    }
+
+    start() {
+        super.start();
+        this.startTime = Date.now();
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        this.audio.play();
+    }
+
+    update(delta, floor) {
+        if (!this.hasDecreasedStrength && this.startTime + this.animationTime / 2 < Date.now()) {
+            this.hasDecreasedStrength = true;
+            this.target.addEffect(new StrengthEffect(this.amount, this.target));
+            if(this.isTemporary) {
+                this.target.addEffect(new StrengthDownEffect(this.amount, this.target));
+            }
+        }
+
+        if (this.startTime + this.animationTime < Date.now()) {
+            this.isRunning = false;
+            return;
+        }
+
+        // render
+        floor.ctx.drawImage(this.images[Math.floor((Date.now() - this.startTime) / (this.animationTime / this.frames))], this.target.x - 60, this.target.y - 60, 120, 120);
+    }
+}
+
+class HealElement extends ActionOutcomeElement {
+    constructor(amount, target) {
+        super();
+        /** @type {number} */
+        this.amount = amount;
+        /** @type {Character} */
+        this.target = target;
+        /** @type {boolean} */
+        this.hasHealed = false;
+        /** @type {number} */
+        this.startTime = 0;
+        /** @type {number} */
+        this.frames = 8;
+        /** @type {number} */
+        this.animationTime = 500;
+        /** @type {Image[]} */
+        this.images = separateImages(document.getElementById('animation-heal'), this.frames, 1, 120, 120, 120, 120);
+        /** @type {HTMLAudioElement} */
+        this.audio = AudioResources.heal;
+    }
+
+    start() {
+        super.start();
+        this.startTime = Date.now();
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        this.audio.play();
+    }
+
+    update(delta, floor) {
+        if (!this.hasHealed && this.startTime + this.animationTime / 2 < Date.now()) {
+            this.hasHealed = true;
+            this.target.heal(this.amount, floor);
+        }
+
+        if (this.startTime + this.animationTime < Date.now()) {
+            this.isRunning = false;
+            return;
+        }
+
+        // render
+        floor.ctx.drawImage(this.images[Math.floor((Date.now() - this.startTime) / (this.animationTime / this.frames))], this.target.x - 60, this.target.y - 60, 120, 120);
+    }
+}
+
+class GainEnergyElement extends ActionOutcomeElement {
+    constructor(amount, target) {
+        super();
+        /** @type {number} */
+        this.amount = amount;
+        /** @type {Character} */
+        this.target = target;
+        /** @type {boolean} */
+        this.hasGainedEnergy = false;
+        /** @type {number} */
+        this.startTime = 0;
+        /** @type {number} */
+        this.frames = 14;
+        /** @type {number} */
+        this.animationTime = 500;
+        /** @type {Image[]} */
+        this.images = separateImages(document.getElementById('animation-energy'), this.frames, 1, 120, 120, 120, 120);
+        /** @type {HTMLAudioElement} */
+        this.audio = AudioResources.energy;
+    }
+
+    start() {
+        super.start();
+        this.startTime = Date.now();
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        this.audio.play();
+    }
+
+    update(delta, floor) {
+        if (!this.hasGainedEnergy && this.startTime + this.animationTime / 2 < Date.now()) {
+            this.hasGainedEnergy = true;
+            this.target.addEffect(new EnergyEffect(this.amount, this.target));
+        }
+
+        if (this.startTime + this.animationTime < Date.now()) {
+            this.isRunning = false;
+            return;
+        }
+
+        // render
+        floor.ctx.drawImage(this.images[Math.floor((Date.now() - this.startTime) / (this.animationTime / this.frames))], this.target.x - 60, this.target.y - 60, 120, 120);
     }
 }

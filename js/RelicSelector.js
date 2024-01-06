@@ -5,7 +5,11 @@ let relics = [];
 let unselectedRelics = [
     new PoisonJar(),
     new Spike(),
-    new PoisonGas()
+    new PoisonGas(),
+    new GrowingSuit(),
+    new PowerMachine(),
+    new RegenMachine(),
+    new EnergySource()
 ];
 
 let relicSelections = [];

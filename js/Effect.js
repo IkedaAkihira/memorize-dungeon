@@ -74,8 +74,8 @@ class StrengthEffect extends Effect {
      * @param {number} amount 
      * @param {Character} target
      */
-    constructor(amount) {
-        super('strength', 'Strength', 'Increase your damage by 1.', new Image('img/effect/strength.png'), amount, target);
+    constructor(amount, target) {
+        super('strength', 'Strength', 'Increase your damage by 1.', document.getElementById('effect-strength'), amount, target);
     }
 
     /**
@@ -83,8 +83,41 @@ class StrengthEffect extends Effect {
      * @param {GameEvent} event 
      */
     emit(event) {
-        if (event.type === 'beforeAttack' && event.damageTarget === this.target) {
+        if (event.type === 'beforeAttack' && event.damageSource === this.target) {
             event.damage += this.amount;
         }
+    }
+}
+
+class StrengthDownEffect extends Effect {
+    /**
+     * 
+     * @param {number} amount 
+     * @param {Character} target
+     */
+    constructor(amount, target) {
+        super('strengthDown', 'Strength Down', 'Decrease 1 strength at the end of your turn.', document.getElementById('effect-strength-down'), amount, target);
+    }
+
+    /**
+     * 
+     * @param {GameEvent} event 
+     */
+    emit(event) {
+        if (event.type === 'turnEnd' && event.target === this.target) {
+            event.floor.actionOutcomeStack.push(new GainStrengthElement(-this.amount, event.target, false));
+            this.target.removeEffect(this.id);
+        }
+    }
+}
+
+class EnergyEffect extends Effect {
+    /**
+     * 
+     * @param {number} amount 
+     * @param {Character} target
+     */
+    constructor(amount, target) {
+        super('energy', 'Energy', 'Some actions require and consume this effect.', document.getElementById('effect-energy'), amount, target);
     }
 }
