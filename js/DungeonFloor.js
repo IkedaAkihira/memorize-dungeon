@@ -3,17 +3,20 @@ class DungeonFloor {
      * @param {CanvasRenderingContext2D} ctx
      * @param {Player} player
      */
-    constructor(ctx, player) {
+    constructor(ctx, player, floorCount) {
         /** @type {CanvasRenderingContext2D} */
         this.ctx = ctx;
         /** @type {Player} */
         this.player = player;
+        /** @type {number} */
+        this.floorCount = floorCount;
         /** @type {EventHandler} */
         this.eventHandler = new EventHandler();
         /** @type {Array<ActionOutcomeElement>} */
         this.actionOutcomeStack = [];
         /** @type {ActionOutcomeElement} */
         this.currentOutcomeElement = null;
+        /** @type {boolean} */
         this.isRunning = true;
     }
 
@@ -33,8 +36,8 @@ class DungeonFloor {
 
 
 class BattleFloor extends DungeonFloor{
-    constructor(ctx, player, enemy) {
-        super(ctx, player);
+    constructor(ctx, player, enemy, floorCount) {
+        super(ctx, player, floorCount);
         /** @type {Character} */
         this.enemy = enemy;
         this.eventHandler = new BattleFloorEventHandlers(player, enemy);
@@ -53,8 +56,6 @@ class BattleFloor extends DungeonFloor{
          * 9 = Enemy's turn end
          * @type {number} */
         this.turnState = 0;
-        /** @type {number} */
-        this.floorCount = 1;
     }
 
     update(delta) {
