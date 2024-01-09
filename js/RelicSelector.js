@@ -9,7 +9,11 @@ let unselectedRelics = [
     new GrowingSuit(),
     new PowerMachine(),
     new RegenMachine(),
-    new EnergySource()
+    new EnergySource(),
+    new PoisonSword(),
+    new ChargeSword(),
+    new EnergySword(),
+    new CatalystSword()
 ];
 
 let relicSelections = [];

@@ -129,3 +129,51 @@ class EnergySource extends Relic {
         }
     }
 }
+
+class PoisonSword extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/poison_sword.png';
+        super('poisonSword', '毒の剣', '行動に「ポイズン・ストライク」を追加する。', image);
+    }
+
+    onEquip(player) {
+        player.addAction(new PoisonStrikeAction(10, 3));
+    }
+}
+
+class ChargeSword extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/charge_sword.png';
+        super('chargeSword', '充電の剣', '行動に「チャージ・ストライク」を追加する。', image);
+    }
+
+    onEquip(player) {
+        player.addAction(new ChargeStrikeAction(10, 2));
+    }
+}
+
+class EnergySword extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/energy_sword.png';
+        super('energySword', 'エナジーの剣', '行動に「エナジー・ストライク」を追加する。', image);
+    }
+
+    onEquip(player) {
+        player.addAction(new EnergyStrikeAction(20, 2));
+    }
+}
+
+class CatalystSword extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/catalyst_sword.png';
+        super('catalystSword', '触媒の剣', '行動に「カタリスト・ストライク」を追加する。', image);
+    }
+
+    onEquip(player) {
+        player.addAction(new CatalystStrikeAction(10, 2));
+    }
+}

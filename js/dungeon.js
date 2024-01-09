@@ -4,7 +4,9 @@ const playerImage = new Image(240, 240);
 playerImage.src = 'img/characters/hero.png';
 const enemyImage = new Image(240, 240);
 enemyImage.src = 'img/characters/dummy.png';
-const player = new Player('Player', 100, [], 100, playerImage);
+const player = new Player('Player', 100, 100, playerImage);
+player.addAction(new StrikeAction(10));
+player.addAction(new HeavyStrikeAction(25));
 
 
 let floor;
@@ -44,4 +46,6 @@ function initFloor(floorCount) {
     // enemy.addEffect(new PoisonEffect(5, enemy));
 }
 
+
 setInterval(update, 1000 / 30, 0);
+openSelectRelicDialog();
