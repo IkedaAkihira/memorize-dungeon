@@ -36,7 +36,7 @@ class PoisonJar extends Relic {
     constructor() {
         const image = document.createElement('img');
         image.src = 'img/relics/poison_jar.png';
-        super('poisonJar', '毒瓶', 'クイズに正解するたび、相手に1の毒を付与する。', image);
+        super('poisonJar', '毒瓶', '問題に正解するたび、相手に1の毒を付与する。', image);
     }
 
     emit(event) {
@@ -50,7 +50,7 @@ class Spike extends Relic {
     constructor() {
         const image = document.createElement('img');
         image.src = 'img/relics/spike.png';
-        super('spike', 'スパイク', 'クイズに正解するたびに、相手に3ダメージを与える。', image);
+        super('spike', 'スパイク', '問題に正解するたびに、相手に3ダメージを与える。', image);
     }
 
     emit(event) {
@@ -78,7 +78,7 @@ class GrowingSuit extends Relic {
     constructor() {
         const image = document.createElement('img');
         image.src = 'img/relics/growing_suit.png';
-        super('growingSuit', '成長するスーツ', 'クイズに正解するたびに、筋力を1得る。この筋力はターン終了時に失われる。', image);
+        super('growingSuit', '成長するスーツ', '問題に正解するたびに、筋力を1得る。この筋力はターン終了時に失われる。', image);
     }
 
     emit(event) {
@@ -120,12 +120,12 @@ class EnergySource extends Relic {
     constructor() {
         const image = document.createElement('img');
         image.src = 'img/relics/energy_source.png';
-        super('energySource', 'エネルギー源', 'ターン開始時、エネルギーを1得る。', image);
+        super('energySource', 'エネルギー源', 'ターン開始時、エネルギーを2得る。', image);
     }
 
     emit(event) {
         if (event.type === 'turnStart' && event.target === this.player) {
-            event.floor.actionOutcomeStack.push(new GainEnergyElement(1, event.target));
+            event.floor.actionOutcomeStack.push(new GainEnergyElement(2, event.target));
         }
     }
 }
@@ -150,7 +150,7 @@ class ChargeSword extends Relic {
     }
 
     onEquip(player) {
-        player.addAction(new ChargeStrikeAction(10, 2));
+        player.addAction(new ChargeStrikeAction(10, 3));
     }
 }
 
@@ -162,7 +162,7 @@ class EnergySword extends Relic {
     }
 
     onEquip(player) {
-        player.addAction(new EnergyStrikeAction(20, 2));
+        player.addAction(new EnergyStrikeAction(20, 3));
     }
 }
 
@@ -186,7 +186,7 @@ class LightSword extends Relic {
     }
 
     onEquip(player) {
-        player.addAction(new ContinuousSlashAction(4, 8));
+        player.addAction(new ContinuousSlashAction(2, 10));
     }
 }
 
@@ -210,7 +210,7 @@ class LightningJar extends Relic {
     }
 
     onEquip(player) {
-        player.addAction(new LightningAction(9));
+        player.addAction(new LightningAction(5));
     }
 }
 
@@ -222,6 +222,80 @@ class PoisonEvolver extends Relic {
     }
 
     onEquip(player) {
-        player.addAction(new EvolvePoisonAction(3));
+        player.addAction(new EvolvePoisonAction(5));
+    }
+}
+
+class EnergyCharger extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/energy_charger.png';
+        super('energyCharger', 'エナジー充電器', '行動に「チャージ・エナジー」を追加する。', image);
+    }
+
+    onEquip(player) {
+        player.addAction(new ChargeEnergyAction(3, 3));
+    }
+}
+
+class HexKnives extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/hex_knives.png';
+        super('hexKnives', 'ヘックス・ナイフ', '行動に「ヘックス・ナイフ」を追加する。', image);
+    }
+
+    onEquip(player) {
+        player.addAction(new HexKnivesAction(5, 6));
+    }
+}
+
+class CursedPuppet extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/cursed_puppet.png';
+        super('cursedPuppet', '呪いの人形', 'ターン終了時、相手が毒を持っているならば、毒の数だけダメージを与える。', image);
+    }
+
+    emit(event) {
+        if (event.type === 'turnEnd' && event.target === this.player) {
+            if (event.opponent.effects.hasOwnProperty('poison')) {
+                event.floor.actionOutcomeStack.push(new SlashElement(event.opponent.effects['poison'].amount, event.opponent));
+            }
+        }
+    }
+}
+
+class HolyWater extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/holy_water.png';
+        super('holyWater', '聖水', '問題に正解するたびに、体力を1回復する。', image);
+    }
+
+    emit(event) {
+        if (event.type === 'answerCorrect') {
+            event.floor.actionOutcomeStack.push(new HealElement(1, event.target));
+        }
+    }
+}
+
+class Minion extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/minion.png';
+        super('minion', '手下', 'ターン開始時、エネルギーを3消費して、相手に10ダメージを与える。', image);
+    }
+
+    emit(event) {
+        if (event.type === 'turnStart' && event.target === this.player) {
+            if (event.target.effects.hasOwnProperty('energy') && event.target.effects['energy'].amount >= 3) {
+                event.floor.actionOutcomeStack.push(new SlashElement(10, event.opponent));
+                event.target.effects['energy'].amount -= 3;
+                if (event.target.effects['energy'].amount === 0) {
+                    event.target.removeEffect('energy');
+                }
+            }
+        }
     }
 }
