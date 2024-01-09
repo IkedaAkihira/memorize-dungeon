@@ -333,21 +333,13 @@ class PlayerInteractionElement {
             return;
         }
 
-        if (actionCode === 'strike') {
-            floor.actionOutcomeStack.push(new QuizElement(() => {
-                floor.actionOutcomeStack.push(new SlashElement(10, floor.enemy, floor.player));
-            }, () => {
+        if (floor.player.actions.hasOwnProperty(actionCode)) {
+            if (!floor.player.actions[actionCode].onUse(floor)) {
+                // The action was not used
+                console.log('The action was not used');
+                return;
+            }
 
-            }));
-        } else if (actionCode === 'heavy-strike') {
-            floor.actionOutcomeStack.push(new QuizElement(() => {
-                floor.actionOutcomeStack.push(new QuizElement(() => {
-                    floor.actionOutcomeStack.push(new QuizElement(() => {
-                        floor.actionOutcomeStack.push(new HeavySlashElement(25, floor.enemy, floor.player));
-                    }, () => {}));
-                }, () => {}));
-            }, () => {}));
-            // floor.actionOutcomeStack.push(new HeavySlashElement(25, floor.enemy));
         } else {
             console.log('Unknown action code: ' + actionCode);
             return;

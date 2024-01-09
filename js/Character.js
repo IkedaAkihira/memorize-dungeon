@@ -75,18 +75,28 @@ class Character extends EventHandler {
 }
 
 class Player extends Character {
-    constructor(name, maxHealth, actions, money,  image) {
+    constructor(name, maxHealth, money,  image) {
         super(name, maxHealth, image);
-        /** @type {Array<Action>} */
-        this.actions = actions;
+        /** @type {Object} */
+        this.actions = {};
         /** @type {number} */
         this.money = money;
         /** @type {Array<Relic>} */
         this.relics = [];
     }
 
+    /**
+     * 
+     * @param {Action} action 
+     */
     addAction(action) {
-        this.actions.push(action);
+        this.actions[action.id] = action;
+        const actionButton = document.createElement('div');
+        actionButton.classList.add('action-item');
+        actionButton.innerHTML = action.name;
+        actionButton.dataset.actionId = action.id;
+        actionButton.addEventListener('click', onActionButtonClick);
+        actionList.appendChild(actionButton);
     }
 
     addRelic(relic) {

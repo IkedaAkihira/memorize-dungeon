@@ -1,8 +1,7 @@
 let actionCode = '';
 let isActionBusy = true;
 
-const strikeButton = document.getElementById('strike');
-const heabyStrikeButton = document.getElementById('heavy-strike');
+const actionList = document.querySelector('.action-list');
 const quizDialog = document.getElementById('quiz-dialog');
 const answerDialog = document.getElementById('answer-dialog');
 const showAnswerButton = document.getElementById('quiz-dialog-show-answer');
@@ -10,20 +9,6 @@ const correctAnswerButton = document.getElementById('correct-answer');
 const wrongAnswerButton = document.getElementById('wrong-answer');
 
 const relicList = document.querySelector('.relic-list');
-
-strikeButton.addEventListener('click', () => {
-    if (isActionBusy) {
-        return;
-    }
-    actionCode = 'strike';
-});
-
-heabyStrikeButton.addEventListener('click', () => {
-    if (isActionBusy) {
-        return;
-    }
-    actionCode = 'heavy-strike';
-});
 
 
 quizDialog.addEventListener('close', () => {
@@ -68,6 +53,18 @@ function showQuizDialog(quiz) {
 
 function showAnswerDialog() {
     answerDialog.showModal();
+}
+
+function onActionButtonClick(event) {
+    if (isActionBusy) {
+        return;
+    }
+    const actionId = event.currentTarget.dataset.actionId;
+    if (actionId === undefined) {
+        return;
+    }
+    actionCode = actionId;
+
 }
 
 addEventListener('keydown', (event) => {
