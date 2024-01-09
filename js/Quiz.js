@@ -46,8 +46,14 @@ if (quizzes.length <= 200) {
     let additionalQuizzes = Quiz.fromTable(additionalQuizTable);
     quizzes = quizzes.concat(additionalQuizzes);
 }
-addEventListener('beforeunload', () => {
+addEventListener('pagehide', () => {
     localStorage.setItem('quizData', JSON.stringify(quizzes));
+});
+
+addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+        localStorage.setItem('quizData', JSON.stringify(quizzes));
+    }
 });
 
 function getRandomQuiz() {
