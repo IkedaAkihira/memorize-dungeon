@@ -225,7 +225,7 @@ class LightningAction extends Action {
      * @param {number} damage
      */
     constructor(damage) {
-        super('lightning', 'ライトニング', `エネルギーをすべて消費し、問題を間違えるか消費したエネルギーの数だけ正解するまで解き、正解するたび敵に${damage}ダメージを与える。`);
+        super('lightning', 'ライトニング', `エネルギーをすべて消費する。そのあと、間違えるか消費したエネルギーの数だけ正解するまで問題を解き、正解するたび敵に${damage}ダメージを与える。`);
         /** @type {number} */
         this.damage = damage;
     }
