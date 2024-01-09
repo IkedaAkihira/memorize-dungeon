@@ -96,6 +96,20 @@ class Player extends Character {
         actionButton.innerHTML = action.name;
         actionButton.dataset.actionId = action.id;
         actionButton.addEventListener('click', onActionButtonClick);
+        actionButton.addEventListener('mouseenter', (e) => {
+            const actionDescription = document.getElementById('action-description');
+            const actionName = document.getElementById('action-description-name');
+            const actionDescriptionText = document.getElementById('action-description-text');
+            actionName.innerHTML = action.name;
+            actionDescriptionText.innerHTML = action.description;
+            actionDescription.style.left = e.pageX + 'px';
+            actionDescription.style.top = e.pageY + 'px';
+            actionDescription.showPopover();
+        });
+        actionButton.addEventListener('mouseleave', () => {
+            const actionDescription = document.getElementById('action-description');
+            actionDescription.hidePopover();
+        });
         actionList.appendChild(actionButton);
     }
 

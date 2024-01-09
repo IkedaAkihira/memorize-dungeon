@@ -65,7 +65,7 @@ body {
 }
 
 
-#relic-description {
+#relic-description, #action-description {
     margin: 0;
     padding: 0;
 }
