@@ -8,7 +8,6 @@ const player = new Player('Player', 100, 100, playerImage);
 player.addAction(new StrikeAction(10));
 player.addAction(new HeavyStrikeAction(25));
 
-
 let floor;
 
 initFloor(1);

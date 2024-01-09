@@ -49,8 +49,8 @@ class Character extends EventHandler {
     damage(amount, source, floor) {
         const damageEvent = new BeforeAttackEvent(source, this, amount, floor);
         floor.eventHandler.emit(damageEvent);
-        if (damageEvent.damage > 0 && !damageEvent.isCancelled) {
-            this.health -= damageEvent.damage;
+        if (damageEvent.getDamage() > 0 && !damageEvent.isCancelled) {
+            this.health -= damageEvent.getDamage();
             floor.eventHandler.emit(new AttackEvent(source, this, damageEvent.damage, floor));
         }
     }

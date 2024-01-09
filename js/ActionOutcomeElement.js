@@ -409,6 +409,31 @@ class QuizElement extends ActionOutcomeElement{
         }
     }
 }
+class SomeQuizzesElement extends QuizElement {
+    constructor(wrongFlag, quizCount, onCorrect, onAllCorrect, onWrong, shouldStopOnWrong) {
+        super(()=> {
+            if (quizCount > 1) {
+                floor.actionOutcomeStack.push(new SomeQuizzesElement(wrongFlag, quizCount - 1, onCorrect, onAllCorrect, onWrong, shouldStopOnWrong));
+                onCorrect();
+                return;
+            }
+            onCorrect();
+            if (!wrongFlag) {
+                onAllCorrect();
+            }
+        }, 
+        () => {
+            if (shouldStopOnWrong) {
+                onWrong();
+                return;
+            }
+            if (quizCount > 1) {
+                floor.actionOutcomeStack.push(new SomeQuizzesElement(true, quizCount - 1, onCorrect, onAllCorrect, onWrong, shouldStopOnWrong));
+            }
+            onWrong();            
+        });
+    }
+}
 
 class GainStrengthElement extends ActionOutcomeElement {
     constructor(amount, target, isTemporary) {
@@ -538,6 +563,100 @@ class GainEnergyElement extends ActionOutcomeElement {
         if (!this.hasGainedEnergy && this.startTime + this.animationTime / 2 < Date.now()) {
             this.hasGainedEnergy = true;
             this.target.addEffect(new EnergyEffect(this.amount, this.target));
+        }
+
+        if (this.startTime + this.animationTime < Date.now()) {
+            this.isRunning = false;
+            return;
+        }
+
+        // render
+        floor.ctx.drawImage(this.images[Math.floor((Date.now() - this.startTime) / (this.animationTime / this.frames))], this.target.x - 60, this.target.y - 60, 120, 120);
+    }
+}
+
+class EvolvePoisonElement extends ActionOutcomeElement {
+    constructor(target) {
+        super();
+        /** @type {Character} */
+        this.target = target;
+        /** @type {boolean} */
+        this.hasEvolved = false;
+        /** @type {number} */
+        this.startTime = 0;
+        /** @type {number} */
+        this.frames = 8;
+        /** @type {number} */
+        this.animationTime = 500;
+        /** @type {Image[]} */
+        this.images = separateImages(document.getElementById('animation-super-poison'), this.frames, 1, 120, 120, 120, 120);
+        /** @type {HTMLAudioElement} */
+        this.audio = AudioResources.superPoison;
+
+    }
+
+    start() {
+        super.start();
+        this.startTime = Date.now();
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        this.audio.play();
+    }
+
+    update(delta, floor) {
+        if (!this.hasEvolved && this.startTime + this.animationTime / 2 < Date.now()) {
+            this.hasEvolved = true;
+            if (!this.target.effects.hasOwnProperty('poison')) {
+                return;
+            }
+            const poisonAmount = this.target.effects['poison'].amount;
+            this.target.removeEffect('poison');
+            this.target.addEffect(new SuperPoisonEffect(poisonAmount, this.target));
+        }
+
+        if (this.startTime + this.animationTime < Date.now()) {
+            this.isRunning = false;
+            return;
+        }
+
+        // render
+        floor.ctx.drawImage(this.images[Math.floor((Date.now() - this.startTime) / (this.animationTime / this.frames))], this.target.x - 60, this.target.y - 60, 120, 120);
+    }
+}
+
+class AddWeakElement extends ActionOutcomeElement {
+    constructor(amount, target) {
+        super();
+        /** @type {number} */
+        this.amount = amount;
+        /** @type {Character} */
+        this.target = target;
+        /** @type {boolean} */
+        this.hasAddedWeak = false;
+        /** @type {number} */
+        this.startTime = 0;
+        /** @type {number} */
+        this.frames = 10;
+        /** @type {number} */
+        this.animationTime = 500;
+        /** @type {Image[]} */
+        this.images = separateImages(document.getElementById('animation-power-down'), this.frames, 1, 120, 120, 120, 120);
+        /** @type {HTMLAudioElement} */
+        this.audio = AudioResources.powerDown;
+    }
+
+    start() {
+        super.start();
+        this.startTime = Date.now();
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        this.audio.play();
+    }
+
+    update(delta, floor) {
+        if (!this.hasAddedWeak && this.startTime + this.animationTime / 2 < Date.now()) {
+            this.hasAddedWeak = true;
+            this.target.addEffect(new WeakEffect(this.amount, this.target));
         }
 
         if (this.startTime + this.animationTime < Date.now()) {

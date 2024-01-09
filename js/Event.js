@@ -49,6 +49,14 @@ class BeforeAttackEvent extends GameEvent {
         this.damageTarget = damageTarget;
         /** @type {number} */
         this.damage = damage;
+        /** @type {number} */
+        this.relativeDamageBoost = 0;
+        /** @type {number} */
+        this.damageBoost = 0;
+    }
+
+    getDamage() {
+        return Math.floor(this.damage * Math.max(0, 1 + this.relativeDamageBoost)) + this.damageBoost;
     }
 }
 
