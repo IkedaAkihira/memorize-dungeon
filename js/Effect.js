@@ -84,7 +84,7 @@ class StrengthEffect extends Effect {
      */
     emit(event) {
         if (event.type === 'beforeAttack' && event.damageSource === this.target) {
-            event.damage += this.amount;
+            event.damageBoost += this.amount;
         }
     }
 }
@@ -119,5 +119,31 @@ class EnergyEffect extends Effect {
      */
     constructor(amount, target) {
         super('energy', 'Energy', 'Some actions require and consume this effect.', document.getElementById('effect-energy'), amount, target);
+    }
+}
+
+class WeakEffect extends Effect {
+    /**
+     * 
+     * @param {number} amount 
+     * @param {Character} target
+     */
+    constructor(amount, target) {
+        super('weak', 'Weak', 'You deals 25% less damage.', document.getElementById('effect-weak'), amount, target);
+    }
+
+    /**
+     * 
+     * @param {GameEvent} event 
+     */
+    emit(event) {
+        if (event.type === 'beforeAttack' && event.damageSource === this.target) {
+            event.relativeDamageBoost -= 0.25;
+        }else if (event.type === 'turnEnd' && event.target === this.target) {
+            this.target.effects['weak'].amount -= 1;
+            if (this.target.effects['weak'].amount === 0) {
+                this.target.removeEffect('weak');
+            }
+        }
     }
 }

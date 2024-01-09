@@ -177,3 +177,51 @@ class CatalystSword extends Relic {
         player.addAction(new CatalystStrikeAction(10, 2));
     }
 }
+
+class LightSword extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/light_sword.png';
+        super('lightSword', '軽量の剣', '行動に「連続斬り」を追加する。', image);
+    }
+
+    onEquip(player) {
+        player.addAction(new ContinuousSlashAction(4, 8));
+    }
+}
+
+class StinkyTank extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/stinky_tank.png';
+        super('stinkyTank', '悪臭のタンク', '行動に「スティンキー・スプレー」を追加する。', image);
+    }
+
+    onEquip(player) {
+        player.addAction(new StinkySprayAction(3, 3));
+    }
+}
+
+class LightningJar extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/lightning_jar.png';
+        super('lightningJar', '雷の瓶', '行動に「ライトニング」を追加する。', image);
+    }
+
+    onEquip(player) {
+        player.addAction(new LightningAction(9));
+    }
+}
+
+class PoisonEvolver extends Relic {
+    constructor() {
+        const image = document.createElement('img');
+        image.src = 'img/relics/poison_evolver.png';
+        super('poisonEvolver', '毒進化装置', '行動に「エボルブ・ポイズン」を追加する。', image);
+    }
+
+    onEquip(player) {
+        player.addAction(new EvolvePoisonAction(3));
+    }
+}

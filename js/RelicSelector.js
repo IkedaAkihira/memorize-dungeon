@@ -13,7 +13,11 @@ let unselectedRelics = [
     new PoisonSword(),
     new ChargeSword(),
     new EnergySword(),
-    new CatalystSword()
+    new CatalystSword(),
+    new LightSword(),
+    new PoisonEvolver(),
+    new LightningJar(),
+    new StinkyTank()
 ];
 
 let relicSelections = [];
