@@ -306,3 +306,57 @@ class EvolvePoisonAction extends Action {
         return true;
     }
 }
+
+class ChargeEnergyAction extends Action {
+    /**
+     * 
+     * @param {number} chargeAmount
+     * @param {number} quizCount
+     */
+    constructor(chargeAmount, quizCount) {
+        super('charge-energy', 'チャージ・エナジー', `問題を${quizCount}問解き、正解するたびエネルギーを${chargeAmount}得る。`);
+        /** @type {number} */
+        this.chargeAmount = chargeAmount;
+        /** @type {number} */
+        this.quizCount = quizCount;
+    }
+
+    /**
+     * 
+     * @param {BattleFloor} floor
+     * @returns {Boolean} True if the action was used, false otherwise
+     */
+    onUse(floor) {
+        floor.actionOutcomeStack.push(new SomeQuizzesElement(false, this.quizCount, () => {
+            floor.actionOutcomeStack.push(new GainEnergyElement(this.chargeAmount, floor.player));
+        }, () => {}, () => {}, false));
+        return true;
+    }
+}
+
+class HexKnivesAction extends Action {
+    /**
+     * 
+     * @param {number} damage
+     * @param {number} quizCount
+     */
+    constructor(damage, quizCount) {
+        super('hex-knives', 'ヘックス・ナイフ', `問題を${quizCount}問解き、正解するたび敵に${damage}ダメージを与える。`);
+        /** @type {number} */
+        this.damage = damage;
+        /** @type {number} */
+        this.quizCount = quizCount;
+    }
+
+    /**
+     * 
+     * @param {BattleFloor} floor
+     * @returns {Boolean} True if the action was used, false otherwise
+     */
+    onUse(floor) {
+        floor.actionOutcomeStack.push(new SomeQuizzesElement(false, this.quizCount, () => {
+            floor.actionOutcomeStack.push(new SlashElement(this.damage, floor.enemy, floor.player));
+        }, () => {}, () => {}, false));
+        return true;
+    }
+}

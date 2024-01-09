@@ -17,7 +17,12 @@ let unselectedRelics = [
     new LightSword(),
     new PoisonEvolver(),
     new LightningJar(),
-    new StinkyTank()
+    new StinkyTank(),
+    new EnergyCharger(),
+    new HexKnives(),
+    new CursedPuppet(),
+    new HolyWater(),
+    new Minion()
 ];
 
 let relicSelections = [];
