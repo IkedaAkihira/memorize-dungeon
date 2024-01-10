@@ -92,7 +92,6 @@ body {
 
 .select-relic-dialog-relic-item {
     width: 100px;
-    height: 100%;
     margin: 5px;
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
@@ -100,6 +99,9 @@ body {
     border-radius: 5px;
     padding: 5px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .select-relic-dialog-relic-item:hover {
@@ -113,11 +115,70 @@ body {
 
 .select-relic-dialog-relic-item-description {
     font-size: 8px;
-    height: 40px;
+    flex-grow: 2;
     text-align: left;
 }
 
 .select-relic-dialog-relic-item-image {
     width: 70%;
     margin: auto;
+}
+
+#quiz-dialog, #answer-dialog, #action-detail-dialog {
+    width: 50%;
+    height: 50%;
+    max-width: 600px;
+}
+
+#quiz-dialog-content, #answer-dialog-content, #action-detail-dialog-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+}
+
+#quiz-dialog-question, #answer-dialog-answer, #action-detail-dialog-description {
+    overflow-y: scroll;
+    flex-grow: 2;
+}
+
+#quiz-dialog-show-answer{
+    align-self: flex-start;
+}
+
+#relic-description {
+    pointer-events: none;
+}
+
+#action-detail-dialog-effects {
+    width: 90%;
+}
+
+.action-detail-dialog-effect {
+    border: black solid 1px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.action-detail-dialog-effect-image {
+    width: 50px;
+    height: 50px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+}
+
+.action-detail-dialog-effect-content {
+    flex-grow: 2;
+}
+
+.action-detail-dialog-effect-content-name {
+    font-size: 16px;
+}
+
+.action-detail-dialog-effect-content-description {
+    font-size: 12px;
 }

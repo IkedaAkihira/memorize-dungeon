@@ -2,20 +2,14 @@ class Effect extends EventHandler{
     /**
      * 
      * @param {String} id
-     * @param {String} name
-     * @param {String} description
      * @param {HTMLImageElement} image
      * @param {number} amount
      * @param {Character} target
      */
-    constructor(id, name, description, image, amount, target) {
+    constructor(id, image, amount, target) {
         super();
         /** @type {String} */
         this.id = id;
-        /** @type {String} */
-        this.name = name;
-        /** @type {String} */
-        this.description = description;
         /** @type {HTMLImageElement} */
         this.image = image;
         /** @type {number} */
@@ -33,7 +27,7 @@ class PoisonEffect extends Effect {
      * @param {Character} target
      */
     constructor(amount, target) {
-        super('poison', 'Poison', 'Deal 1 damage at the end of your turn.', document.getElementById('effect-poison'), amount, target);
+        super('poison', document.getElementById('effect-poison'), amount, target);
     }
 
     /**
@@ -54,7 +48,7 @@ class SuperPoisonEffect extends Effect {
      * @param {Character} target
      */
     constructor(amount, target) {
-        super('superPoison', 'Super Poison', 'Deal 1 damage at the end of your turn.', document.getElementById('effect-super-poison'), amount, target);
+        super('superPoison', document.getElementById('effect-super-poison'), amount, target);
     }
 
     /**
@@ -75,7 +69,7 @@ class StrengthEffect extends Effect {
      * @param {Character} target
      */
     constructor(amount, target) {
-        super('strength', 'Strength', 'Increase your damage by 1.', document.getElementById('effect-strength'), amount, target);
+        super('strength', document.getElementById('effect-strength'), amount, target);
     }
 
     /**
@@ -96,7 +90,7 @@ class StrengthDownEffect extends Effect {
      * @param {Character} target
      */
     constructor(amount, target) {
-        super('strengthDown', 'Strength Down', 'Decrease 1 strength at the end of your turn.', document.getElementById('effect-strength-down'), amount, target);
+        super('strengthDown', document.getElementById('effect-strength-down'), amount, target);
     }
 
     /**
@@ -118,7 +112,7 @@ class EnergyEffect extends Effect {
      * @param {Character} target
      */
     constructor(amount, target) {
-        super('energy', 'Energy', 'Some actions require and consume this effect.', document.getElementById('effect-energy'), amount, target);
+        super('energy', document.getElementById('effect-energy'), amount, target);
     }
 }
 
@@ -129,7 +123,7 @@ class WeakEffect extends Effect {
      * @param {Character} target
      */
     constructor(amount, target) {
-        super('weak', 'Weak', 'You deals 25% less damage.', document.getElementById('effect-weak'), amount, target);
+        super('weak', document.getElementById('effect-weak'), amount, target);
     }
 
     /**

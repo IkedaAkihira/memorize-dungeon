@@ -7,6 +7,13 @@ const answerDialog = document.getElementById('answer-dialog');
 const showAnswerButton = document.getElementById('quiz-dialog-show-answer');
 const correctAnswerButton = document.getElementById('correct-answer');
 const wrongAnswerButton = document.getElementById('wrong-answer');
+const actionDetailDialog = document.getElementById('action-detail-dialog');
+
+const actionNameElement = document.getElementById('action-detail-dialog-name');
+const actionDescriptionElement = document.getElementById('action-detail-dialog-description-text');
+const actionExecuteButton = document.getElementById('action-detail-dialog-execute');
+const actionCancelButton = document.getElementById('action-detail-dialog-cancel');
+const actionEffectsElement = document.getElementById('action-detail-dialog-effects');
 
 const relicList = document.querySelector('.relic-list');
 
@@ -38,6 +45,18 @@ wrongAnswerButton.addEventListener('click', () => {
     answerDialog.close();
 });
 
+actionExecuteButton.addEventListener('click', () => {
+    const actionId = actionExecuteButton.dataset.actionId;
+    if (actionId === undefined) {
+        return;
+    }
+    actionCode = actionId;
+});
+
+actionCancelButton.addEventListener('click', () => {
+    actionDetailDialog.close();
+});
+
 /**
  * @param {Quiz} quiz 
  */
@@ -60,11 +79,36 @@ function onActionButtonClick(event) {
         return;
     }
     const actionId = event.currentTarget.dataset.actionId;
+    const actionName = event.currentTarget.dataset.actionName;
+    const actionDescription = event.currentTarget.dataset.actionDescription;
+    const relatedEffectIds = JSON.parse(event.currentTarget.dataset.relatedEffectIds);
     if (actionId === undefined) {
         return;
     }
-    actionCode = actionId;
+    actionNameElement.innerHTML = actionName;
+    actionDescriptionElement.innerHTML = actionDescription;
+    actionExecuteButton.dataset.actionId = actionId;
+    actionEffectsElement.innerHTML = '';
+    for (const effectId of relatedEffectIds) {
+        actionEffectsElement.innerHTML += getActionDialogEffectElementHTMLText(effectId);
+    }
+    actionDetailDialog.showModal();
+}
 
+function getActionDialogEffectElementHTMLText(effectId) {
+    const effectDetail = EffectDetails[effectId];
+    return ''+
+    `<div class="action-detail-dialog-effect">`+
+    `    <img class="action-detail-dialog-effect-image" src="${effectDetail.icon}" alt="effect"/>`+
+    `    <div class="action-detail-dialog-effect-content">`+
+    `        <div class="action-detail-dialog-effect-content-name">`+
+    `            ${effectDetail.name}`+
+    `        </div>`+
+    `        <div class="action-detail-dialog-effect-content-description">`+
+    `            ${effectDetail.description}`+
+    `        </div>`+
+    `    </div>`+
+    `</div>`;
 }
 
 addEventListener('keydown', (event) => {

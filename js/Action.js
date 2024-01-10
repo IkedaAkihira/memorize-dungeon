@@ -4,14 +4,17 @@ class Action {
      * @param {String} id
      * @param {String} name
      * @param {String} description
+     * @param {String[]} relatedEffectIds
      */
-    constructor(id, name, description) {
+    constructor(id, name, description, relatedEffectIds = []) {
         /** @type {String} */
         this.id = id;
         /** @type {String} */
         this.name = name;
         /** @type {String} */
         this.description = description;
+        /** @type {String[]} */
+        this.relatedEffectIds = relatedEffectIds;
     }
 
     /**
@@ -81,7 +84,7 @@ class PoisonStrikeAction extends Action {
      * @param {number} poisonAmount
      */
     constructor(damage, poisonAmount) {
-        super('poison-strike', 'ポイズン・ストライク', `問題を1問解き、正解なら敵に${damage}ダメージと${poisonAmount}の毒を与える。`);
+        super('poison-strike', 'ポイズン・ストライク', `問題を1問解き、正解なら敵に${damage}ダメージと${poisonAmount}の毒を与える。`, ['poison']);
         /** @type {number} */
         this.damage = damage;
         /** @type {number} */
@@ -109,7 +112,7 @@ class ChargeStrikeAction extends Action {
      * @param {number} chargeAmount
      */
     constructor(damage, chargeAmount) {
-        super('charge-strike', 'チャージ・ストライク', `問題を1問解き、正解なら敵に${damage}ダメージを与え、${chargeAmount}のエネルギーを得る。`);
+        super('charge-strike', 'チャージ・ストライク', `問題を1問解き、正解なら敵に${damage}ダメージを与え、${chargeAmount}のエネルギーを得る。`, ['energy']);
         /** @type {number} */
         this.damage = damage;
         /** @type {number} */
@@ -137,7 +140,7 @@ class EnergyStrikeAction extends Action {
      * @param {number} requireEnergyAmount
      */
     constructor(damage, requireEnergyAmount) {
-        super('energy-strike', 'エナジー・ストライク', `${requireEnergyAmount}のエネルギーを消費して問題を1問解き、正解なら敵に${damage}ダメージを与える。`);
+        super('energy-strike', 'エナジー・ストライク', `${requireEnergyAmount}のエネルギーを消費して問題を1問解き、正解なら敵に${damage}ダメージを与える。`, ['energy']);
         /** @type {number} */
         this.damage = damage;
         /** @type {number} */
@@ -171,7 +174,7 @@ class CatalystStrikeAction extends Action {
      * @param {number} additionalDamagePerPoison
      */
     constructor(damage, additionalDamagePerPoison) {
-        super('catalyst-strike', 'カタリスト・ストライク', `問題を1問解き、正解なら敵に${damage}ダメージと、相手の毒の数だけ${additionalDamagePerPoison}ダメージを与える。`);
+        super('catalyst-strike', 'カタリスト・ストライク', `問題を1問解き、正解なら敵に${damage}ダメージと、相手の毒の数だけ${additionalDamagePerPoison}ダメージを与える。`, ['poison']);
         /** @type {number} */
         this.damage = damage;
         /** @type {number} */
@@ -225,7 +228,7 @@ class LightningAction extends Action {
      * @param {number} damage
      */
     constructor(damage) {
-        super('lightning', 'ライトニング', `エネルギーをすべて消費する。そのあと、間違えるか消費したエネルギーの数だけ正解するまで問題を解き、正解するたび敵に${damage}ダメージを与える。`);
+        super('lightning', 'ライトニング', `エネルギーをすべて消費する。そのあと、間違えるか消費したエネルギーの数だけ正解するまで問題を解き、正解するたび敵に${damage}ダメージを与える。`, ['energy']);
         /** @type {number} */
         this.damage = damage;
     }
@@ -255,7 +258,7 @@ class StinkySprayAction extends Action {
      * @param {number} quizCount
      */
     constructor(poisonAmount, quizCount) {
-        super('stinky-spray', 'スティンキー・スプレー', `問題を${quizCount}問解き、正解するたび敵に${poisonAmount}の毒と脱力を与える。`);
+        super('stinky-spray', 'スティンキー・スプレー', `問題を${quizCount}問解き、正解するたび敵に${poisonAmount}の毒と脱力を与える。`, ['poison', 'weak']);
         /** @type {number} */
         this.poisonAmount = poisonAmount;
         /** @type {number} */
@@ -282,7 +285,7 @@ class EvolvePoisonAction extends Action {
      * @param {number} requireEnergyAmount
      */
     constructor(requireEnergyAmount) {
-        super('evolve-poison', 'エボルブ・ポイズン', `${requireEnergyAmount}のエネルギーを消費して問題を1問解き、正解なら敵の毒をスーパー毒にする。`);
+        super('evolve-poison', 'エボルブ・ポイズン', `${requireEnergyAmount}のエネルギーを消費して問題を1問解き、正解なら敵の毒をスーパー毒にする。`, ['energy', 'poison', 'superPoison']);
         /** @type {number} */
         this.requireEnergyAmount = requireEnergyAmount;
     }
@@ -314,7 +317,7 @@ class ChargeEnergyAction extends Action {
      * @param {number} quizCount
      */
     constructor(chargeAmount, quizCount) {
-        super('charge-energy', 'チャージ・エナジー', `問題を${quizCount}問解き、正解するたびエネルギーを${chargeAmount}得る。`);
+        super('charge-energy', 'チャージ・エナジー', `問題を${quizCount}問解き、正解するたびエネルギーを${chargeAmount}得る。`, ['energy']);
         /** @type {number} */
         this.chargeAmount = chargeAmount;
         /** @type {number} */
