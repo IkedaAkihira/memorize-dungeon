@@ -39,18 +39,24 @@
     </div>
 
     <dialog id="quiz-dialog">
-        <div id="quiz-dialog-question">
-            \[1+1=?\]
+        <div id="quiz-dialog-content">
+            <div id="quiz-dialog-question">
+                \[1+1=?\]
+            </div>
+            <button id="quiz-dialog-show-answer">答えを見る</button>
         </div>
-        <button id="quiz-dialog-show-answer">答えを見る</button>
     </dialog>
 
     <dialog id="answer-dialog">
-        <div id="answer-dialog-answer">
-            \[2\]
+        <div id="answer-dialog-content">
+            <div id="answer-dialog-answer">
+                \[2\]
+            </div>
+            <div>
+                <button id="correct-answer">正解</button>
+                <button id="wrong-answer">不正解</button>
+            </div>
         </div>
-        <button id="correct-answer">正解</button>
-        <button id="wrong-answer">不正解</button>
     </dialog>
 
     <dialog id="select-relic-dialog">
@@ -87,6 +93,26 @@
         
     </dialog>
 
+    <dialog id="action-detail-dialog">
+        <div id="action-detail-dialog-content">
+            <h1 id="action-detail-dialog-name">
+                行動名
+            </h1>
+            <div id="action-detail-dialog-description">
+                <p id="action-detail-dialog-description-text">
+                    行動の説明
+                </p>
+                <div id="action-detail-dialog-effects">
+                </div>
+            </div>
+            
+            <div>
+                <button id="action-detail-dialog-execute">実行</button>
+                <button id="action-detail-dialog-cancel">キャンセル</button>
+            </div>
+        </div>
+    </dialog>
+
     <div id="relic-description" popover="manual">
         <h1 id="relic-description-name">
             レリック名
@@ -96,16 +122,8 @@
         </p>
     </div>
 
-    <div id="action-description" popover="manual">
-        <h1 id="action-description-name">
-            行動名
-        </h1>
-        <p id="action-description-text">
-            行動の説明
-        </p>
-    </div>
-
     <script src="js/AudioResource.js"></script>
+    <script src="js/EffectDetails.js"></script>
 
     <script src="js/Quiz.js"></script>
     <script src="js/PlayerInteraction.js"></script>

@@ -345,6 +345,7 @@ class PlayerInteractionElement {
             return;
         }
 
+        actionDetailDialog.close();
         actionCode = '';
         this.isRunning = false;
         isActionBusy = true;
