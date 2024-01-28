@@ -774,3 +774,49 @@ class JudgementElement extends ActionOutcomeElement {
 
     }
 }
+
+class VampireTransformElement extends ActionOutcomeElement {
+    constructor(target) {
+        super();
+        /** @type {Character} */
+        this.target = target;
+        /** @type {boolean} */
+        this.hasTransformed = false;
+        /** @type {number} */
+        this.startTime = 0;
+        /** @type {number} */
+        this.frames = 10;
+        /** @type {number} */
+        this.animationTime = 750;
+        /** @type {Image[]} */
+        this.images = separateImages(document.getElementById('animation-bat'), this.frames, 1, 240, 240, 120, 120);
+        /** @type {HTMLAudioElement} */
+        this.audio = AudioResources.transform;
+    }
+
+    start() {
+        super.start();
+        this.startTime = Date.now();
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        this.audio.play();
+    }
+
+    update(delta, floor) {
+        if (!this.hasTransformed && this.startTime + this.animationTime / 2 < Date.now()) {
+            this.hasTransformed = true;
+            this.target.image = this.target.vampImage;
+            this.target.maxHealth = 300;
+            this.target.health = 300;
+        }
+
+        if (this.startTime + this.animationTime < Date.now()) {
+            this.isRunning = false;
+            return;
+        }
+        
+        // render
+        floor.ctx.drawImage(this.images[Math.floor((Date.now() - this.startTime) / (this.animationTime / this.frames))], this.target.x - 120, this.target.y - 120, 240, 240);
+
+    }
+}

@@ -9,4 +9,5 @@ const AudioResources = {
     energy : new Audio('audio/energy.mp3'),
     bite : new Audio('audio/bite.mp3'),
     judgement : new Audio('audio/judgement.mp3'),
+    transform : new Audio('audio/transform.mp3'),
 };

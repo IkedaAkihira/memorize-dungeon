@@ -286,3 +286,35 @@ class PoisonMagician extends Character {
         ));
     }
 }
+
+class VampireKnight extends Bat {
+    constructor(power, attackCount, vampPower) {
+        super(power, attackCount);
+        this.vampPower = vampPower;
+        this.vampImage = new Image(240, 240);
+        this.vampImage.src = 'img/characters/vampire_knight.png';
+        this.isTransformed = false;
+    }
+
+    action(floor) {
+        if (this.isTransformed) {
+            this.bite(floor, this.vampPower, 1, floor.player);
+        } else {
+            this.bite(floor, this.power, this.attackCount, floor.player);
+        }
+    }
+
+    transform(floor) {
+        this.isTransformed = true;
+        floor.actionOutcomeStack.push(new VampireTransformElement(this));
+    }
+
+    emit(event) {
+        // When the Vampire Knight is about to die, transform into a Vampire
+        if (!this.isTransformed && event.type === 'beforeAttack' && event.damageTarget === this && event.damage >= this.health) {
+            event.isCancelled = true;
+            this.health = 1;
+            this.transform(event.floor);
+        }
+    }
+}
