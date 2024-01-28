@@ -90,12 +90,12 @@ function onActionButtonClick(event) {
     actionExecuteButton.dataset.actionId = actionId;
     actionEffectsElement.innerHTML = '';
     for (const effectId of relatedEffectIds) {
-        actionEffectsElement.innerHTML += getActionDialogEffectElementHTMLText(effectId);
+        actionEffectsElement.innerHTML += getEffectDetailHTMLText(effectId);
     }
     actionDetailDialog.showModal();
 }
 
-function getActionDialogEffectElementHTMLText(effectId) {
+function getEffectDetailHTMLText(effectId) {
     const effectDetail = EffectDetails[effectId];
     return ''+
     `<div class="action-detail-dialog-effect">`+
@@ -106,6 +106,21 @@ function getActionDialogEffectElementHTMLText(effectId) {
     `        </div>`+
     `        <div class="action-detail-dialog-effect-content-description">`+
     `            ${effectDetail.description}`+
+    `        </div>`+
+    `    </div>`+
+    `</div>`;
+}
+
+function getActionDetailHTMLText(action) {
+    return ''+
+    `<div class="action-detail-dialog-effect">`+
+    // `    <img class="action-detail-dialog-effect-image" src="${effectDetail.icon}" alt="effect"/>`+
+    `    <div class="action-detail-dialog-effect-content">`+
+    `        <div class="action-detail-dialog-effect-content-name">`+
+    `            ${action.name}`+
+    `        </div>`+
+    `        <div class="action-detail-dialog-effect-content-description">`+
+    `            ${action.description}`+
     `        </div>`+
     `    </div>`+
     `</div>`;

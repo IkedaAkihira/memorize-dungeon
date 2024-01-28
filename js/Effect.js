@@ -141,3 +141,23 @@ class WeakEffect extends Effect {
         }
     }
 }
+
+class JudgementEffect extends Effect {
+    /**
+     * 
+     * @param {Character} target
+     */
+    constructor(amount, target) {
+        super('judgement', document.getElementById('effect-judgement'), amount, target);
+    }
+
+    /**
+     * 
+     * @param {GameEvent} event 
+     */
+    emit(event) {
+        if (event.type === 'answerWrong' && event.target === this.target) {
+            event.floor.actionOutcomeStack.push(new JudgementElement(this.amount, event.target, null));
+        }
+    }
+}

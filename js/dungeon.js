@@ -8,6 +8,7 @@ const player = new Player('Player', 100, 100, playerImage);
 player.addAction(new StrikeAction(10));
 player.addAction(new HeavyStrikeAction(25));
 
+
 let floor;
 
 initFloor(1);
@@ -30,7 +31,19 @@ function update() {
 }
 
 function initFloor(floorCount) {
-    const enemy = new Character('Enemy', 100, enemyImage);
+    let enemy;
+    const rand = Math.floor(Math.random() * 5);
+    if (rand === 0) {
+        enemy = new Fighter(15)
+    } else if (rand === 1) {
+        enemy = new Stinky(7, 3, 3);
+    } else if (rand === 2) {
+        enemy = new ThreeHeadedDog(10);
+    } else if (rand === 3) {
+        enemy = new Bat(5, 5);
+    }else if (rand === 4) {
+        enemy = new PoisonMagician(10, 7, 10);
+    }
     floor = new BattleFloor(dungeonCanvas.getContext('2d'), player, enemy, floorCount);
 
     player.x = 120;
