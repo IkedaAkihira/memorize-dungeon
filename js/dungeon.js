@@ -43,6 +43,8 @@ function initFloor(floorCount) {
         enemy = new Bat(5, 5);
     }else if (rand === 4) {
         enemy = new PoisonMagician(10, 7, 10);
+    }else if (rand === 5) {
+        enemy = new VampireKnight(5, 5, 30);
     }
     floor = new BattleFloor(dungeonCanvas.getContext('2d'), player, enemy, floorCount);
 
