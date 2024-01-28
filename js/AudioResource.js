@@ -6,5 +6,7 @@ const AudioResources = {
     powerUp : new Audio('audio/power_up.mp3'),
     powerDown : new Audio('audio/power_down.mp3'),
     heal : new Audio('audio/heal.mp3'),
-    energy : new Audio('audio/energy.mp3')
+    energy : new Audio('audio/energy.mp3'),
+    bite : new Audio('audio/bite.mp3'),
+    judgement : new Audio('audio/judgement.mp3'),
 };

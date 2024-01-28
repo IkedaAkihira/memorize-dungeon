@@ -139,3 +139,150 @@ class Player extends Character {
     }
     
 }
+
+class Fighter extends Character {
+    constructor(power) {
+        const image = new Image(240, 240);
+        image.src = 'img/characters/fighter.png';
+        super('Fighter', 100, image);
+        this.power = power;
+    }
+
+    action(floor) {
+        this.slash(floor, this.power, floor.player);
+    }
+
+    slash(floor, damage, target, shouldInvert = true) {
+        floor.actionOutcomeStack.push(new QuizElement(
+            () => {
+                floor.actionOutcomeStack.push(new SlashElement(damage, target, this));
+            },
+            () => {},
+            shouldInvert
+        ));
+    }
+}
+
+class Stinky extends Character {
+    /**
+     * 
+     * @param {number} power
+     * @param {number} quizCount
+     * @param {number} poisonAmount
+     */
+    constructor(power, quizCount, poisonAmount) {
+        const image = new Image(240, 240);
+        image.src = 'img/characters/stinky.png';
+        super('Stinky', 130, image);
+        this.power = power;
+        this.quizCount = quizCount;
+        this.poisonAmount = poisonAmount;
+    }
+
+    action(floor) {
+        const rand = Math.floor(Math.random() * 3);
+        if (rand <= 1) {
+            this.punch(floor, this.power, floor.player)
+        } else {
+            this.stinkySpray(floor, this.quizCount, this.poisonAmount, floor.player)
+        }
+    }
+
+    punch(floor, damage, target, shouldInvert = true) {
+        floor.actionOutcomeStack.push(new QuizElement(
+            () => {
+                floor.actionOutcomeStack.push(new HeavySlashElement(damage, target, this));
+            },
+            () => {},
+            shouldInvert
+        ));
+    }
+
+    stinkySpray(floor, quizCount, amount, target, shouldInvert = true) {
+        floor.actionOutcomeStack.push(new SomeQuizzesElement(false, quizCount, () => {
+            floor.actionOutcomeStack.push(new AddWeakElement(amount, target));
+            floor.actionOutcomeStack.push(new AddPoisonElement(amount, target));
+        }, () => {}, () => {}, false, shouldInvert));
+    }
+}
+
+class Bat extends Character {
+    constructor(power, attackCount) {
+        const image = new Image(240, 240);
+        image.src = 'img/characters/bat.png';
+        super('Bat', 40, image);
+        this.power = power;
+        this.attackCount = attackCount;
+    }
+
+    action(floor) {
+        this.bite(floor, this.power, this.attackCount, floor.player);
+    }
+
+    bite(floor, damage, attackCount, target, shouldInvert = true) {
+        floor.actionOutcomeStack.push(new SomeQuizzesElement(false, attackCount, () => {
+            floor.actionOutcomeStack.push(new BiteElement(damage, target, this));
+        }, () => {}, () => {}, true, shouldInvert));
+    }
+}
+
+class ThreeHeadedDog extends Character {
+    constructor(power) {
+        const image = new Image(240, 240);
+        image.src = 'img/characters/three_headed_dog.png';
+        super('Three Headed Dog', 200, image);
+        this.power = power;
+    }
+
+    action(floor) {
+        this.bite(floor, this.power, floor.player);
+    }
+    
+    bite(floor, damage, target, shouldInvert = true) {
+        floor.actionOutcomeStack.push(new SomeQuizzesElement(false, 3, () => {
+            floor.actionOutcomeStack.push(new BiteElement(damage, target, this));
+        }, () => {}, () => {}, false, shouldInvert));
+
+    }
+}
+
+class PoisonMagician extends Character {
+    constructor(power, poisonAmount, requiredPoisonAmount) {
+        const image = new Image(240, 240);
+        image.src = 'img/characters/poison_magician.png';
+        super('Poison Magician', 300, image);
+        this.power = power;
+        this.poisonAmount = poisonAmount;
+        this.requiredPoisonAmount = requiredPoisonAmount;
+    }
+
+    action(floor) {
+        if (floor.player.effects.hasOwnProperty('poison')) {
+            if (floor.player.effects['poison'].amount >= this.requiredPoisonAmount) {
+                this.evolvePoison(floor, floor.player);
+                return;
+            }
+        }
+        this.poisonShot(floor, this.poisonAmount, floor.player);
+    }
+
+    poisonShot(floor, amount, target) {
+        floor.actionOutcomeStack.push(new QuizElement(
+            () => {
+                floor.actionOutcomeStack.push(new AddPoisonElement(amount, target));
+            },
+            () => {},
+            true
+        ));
+    }
+
+    evolvePoison(floor, target) {
+        floor.actionOutcomeStack.push(new QuizElement(
+            () => {
+                floor.actionOutcomeStack.push(new EvolvePoisonElement(target));
+            },
+            () => {},
+            true
+        ));
+    }
+}

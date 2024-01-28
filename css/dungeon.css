@@ -124,13 +124,13 @@ body {
     margin: auto;
 }
 
-#quiz-dialog, #answer-dialog, #action-detail-dialog {
+#quiz-dialog, #answer-dialog, #action-detail-dialog, #relic-detail-dialog {
     width: 50%;
     height: 50%;
     max-width: 600px;
 }
 
-#quiz-dialog-content, #answer-dialog-content, #action-detail-dialog-content {
+#quiz-dialog-content, #answer-dialog-content, #action-detail-dialog-content, #relic-detail-dialog-content {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -138,7 +138,7 @@ body {
     justify-content: space-between;
 }
 
-#quiz-dialog-question, #answer-dialog-answer, #action-detail-dialog-description {
+#quiz-dialog-question, #answer-dialog-answer, #action-detail-dialog-description, #relic-detail-dialog-description {
     overflow-y: scroll;
     flex-grow: 2;
 }
@@ -151,7 +151,7 @@ body {
     pointer-events: none;
 }
 
-#action-detail-dialog-effects {
+#action-detail-dialog-effects, #relic-detail-dialog-effects {
     width: 90%;
 }
 
@@ -181,4 +181,20 @@ body {
 
 .action-detail-dialog-effect-content-description {
     font-size: 12px;
+}
+
+#relic-detail-dialog-image {
+    width: 10%;
+    height: auto;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+}
+
+#action-detail-dialog-name, #relic-detail-dialog-name {
+    font-size: 24px;
+    margin-bottom: 0;
+}
+
+#action-detail-dialog-description-text, #relic-detail-dialog-description-text {
+    margin-top: 0;
 }

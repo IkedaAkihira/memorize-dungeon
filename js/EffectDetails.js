@@ -23,5 +23,10 @@ const EffectDetails = {
         'name': 'エネルギー',
         'description': 'エネルギー自体には効果はないが、エネルギーを必要とする行動やレリックがある。',
         'icon': 'img/effects/energy.png'
-    }
+    },
+    'judgement': {
+        'name': '裁き',
+        'description': '問題に間違えるたびに、裁きの数だけダメージを受ける。',
+        'icon': 'img/effects/judgement.png'
+    },
 };
