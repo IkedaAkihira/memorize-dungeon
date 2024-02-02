@@ -1,3 +1,50 @@
+function createRelic(id) {
+    switch (id) {
+        case 'poisonJar':
+            return new PoisonJar();
+        case 'spike':
+            return new Spike();
+        case 'poisonGas':
+            return new PoisonGas();
+        case 'growingSuit':
+            return new GrowingSuit();
+        case 'regenMachine':
+            return new RegenMachine();
+        case 'powerMachine':
+            return new PowerMachine();
+        case 'energySource':
+            return new EnergySource();
+        case 'poisonSword':
+            return new PoisonSword();
+        case 'chargeSword':
+            return new ChargeSword();
+        case 'energySword':
+            return new EnergySword();
+        case 'catalystSword':
+            return new CatalystSword();
+        case 'lightSword':
+            return new LightSword();
+        case 'stinkyTank':
+            return new StinkyTank();
+        case 'lightningJar':
+            return new LightningJar();
+        case 'poisonEvolver':
+            return new PoisonEvolver();
+        case 'energyCharger':
+            return new EnergyCharger();
+        case 'hexKnives':
+            return new HexKnives();
+        case 'cursedPuppet':
+            return new CursedPuppet();
+        case 'holyWater':
+            return new HolyWater();
+        case 'minion':
+            return new Minion();
+        default:
+            return null;
+    }
+}
+
 class Relic extends EventHandler{
     /**
      * 

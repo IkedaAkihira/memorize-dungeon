@@ -107,6 +107,7 @@ class BattleFloor extends DungeonFloor{
                 // Game over
                 this.ctx.font = '30px Arial';
                 this.ctx.fillText('Game over', this.ctx.canvas.width / 2, this.ctx.canvas.height / 2);
+                this.isRunning = false;
                 return;
             }
             if (this.enemy.health <= 0) {
