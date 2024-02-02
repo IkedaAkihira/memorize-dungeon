@@ -11,7 +11,25 @@ player.addAction(new HeavyStrikeAction(25));
 
 let floor;
 
-initFloor(1);
+if (isExistData()) {
+    const data = loadData();
+    const playerRelics = data.playerRelicIds.map(id => createRelic(id));
+    relics = data.relics.map(id => createRelic(id));
+    unselectedRelics = data.unselectedRelics.map(id => createRelic(id));
+
+    for (const relic of playerRelics) {
+        player.addRelic(relic);
+    }
+
+    
+    player.health = data.health;
+    player.maxHealth = data.maxHealth;
+
+    initFloor(data.floorCount + 1);
+}else {
+    initFloor(1);
+}
+
 
 let lastTime = 0;
 
@@ -20,6 +38,11 @@ function update() {
         return;
     }
     if (!floor.isRunning) {
+        if (player.health <= 0) {
+            deleteData();
+            return;
+        }
+        saveData(player, floor, relics, unselectedRelics);
         initFloor(floor.floorCount + 1);
         openSelectRelicDialog();
         return;
